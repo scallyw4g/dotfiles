@@ -1,0 +1,15 @@
+
+
+while true; do
+
+	# we have to restart conky so it doesnt flip out when we change wallpapers
+	# pkill conky
+
+		find /reallyBig/Pictures/Wallpapers -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
+			shuf -n2 -z | xargs -0 feh --recursive --randomize --bg-fill
+
+	# fork conky to background with &
+	# conky &
+
+	sleep 5m
+done

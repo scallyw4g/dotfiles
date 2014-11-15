@@ -56,10 +56,11 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-
+# Rbenv stuff
 export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
 export PGDATA="/var/lib/postgres/data"
 export PATH=$HOME/bin:$PATH
 
 
-eval "$(rbenv init -)"

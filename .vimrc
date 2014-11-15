@@ -55,6 +55,9 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 
 " ----------------------------------- Custom Keymaps
 
+" Save a file with sudo 
+cmap w!! w !sudo tee %
+
 " set file toggle
 nmap <Leader><Leader> <C-^>
 

@@ -63,4 +63,4 @@ eval "$(rbenv init -)"
 export PGDATA="/var/lib/postgres/data"
 export PATH=$HOME/bin:$PATH
 
-
+export EDITOR=vim

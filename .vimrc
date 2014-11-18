@@ -13,6 +13,25 @@ syntax enable
 set background=dark
 colorscheme solarized
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------ Splitting
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set splitbelow
+set splitright
+
+nnoremap <Leader>h <C-W><C-H>
+nnoremap <Leader>j <C-W><C-j>
+nnoremap <Leader>k <C-W><C-k>
+nnoremap <Leader>l <C-W><C-l>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------ Tabbing
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <Leader><C-L> :tabNext<CR>
+nnoremap <Leader><C-H> :tabprevious<CR>
+
+
 " ----------------------------------- Numbering 
 set relativenumber
 " Show current line number
@@ -133,6 +152,7 @@ function! UpdateVimRC()
 				 call remote_send(server, '<Esc>:source $HOME/.vim/.vimrc<CR>')
 		 endfor
  endfunction
+
  augroup myvimrchooks
  au!
 		autocmd bufwritepost .vimrc call UpdateVimRC()

@@ -6,6 +6,12 @@ zstyle :compinstall filename '/home/scallywag/.zshrc'
 autoload -Uz compinit promptinit
 promptinit
 compinit
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' menu select
+setopt completealiases
+
 # Set prompt styling
 
 autoload -Uz vcs_info

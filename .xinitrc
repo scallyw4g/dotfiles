@@ -8,6 +8,7 @@ bg_rotate & 							# rotate bg image  *NOTE this script is set to run in the bac
 
 compton  &							# start compton in the background
 
+
 ##############  INIT CONKYS
 # main conky
 conky -c $HOME/.scripts/conkyrc-main &								

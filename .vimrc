@@ -83,6 +83,8 @@ nmap <Leader><Leader> <C-^>
 " set ,d to delete current file
 nmap <Leader>d :call delete(expand('%'))<CR>
 
+" jj escapes insert mode and saves doc
+imap jj <C-c>:w<CR>
 
 " ----------------------------------- ctrl-P Settings
 

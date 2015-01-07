@@ -62,6 +62,9 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# Alias for hub
+eval "$(hub alias -s)"
+
 # Rbenv stuff
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"

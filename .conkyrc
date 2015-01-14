@@ -28,12 +28,12 @@ background no
 border_width 1
 cpu_avg_samples 2
 default_color white
-default_outline_color white
-default_shade_color white
+default_shade_color black
+default_outline_color black
+draw_shades yes
 draw_borders no
 draw_graph_borders yes 
 draw_outline no
-draw_shades no
 use_xft yes 
 xftfont DejaVu Sans Mono:size=12
 gap_x 20 

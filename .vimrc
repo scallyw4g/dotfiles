@@ -1,17 +1,68 @@
+" Apparently this must be first
+" This is set in case this file is ever loaded with the -u flag, otherwise it
+" is redundant as far as I can tell
+set nocompatible
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- Pathogen settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 execute pathogen#infect()
 syntax on
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"----------------------------------- Misc Custom Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Solarized Colorscheme
+syntax enable
+set background=dark
+colorscheme solarized
+
+" Toggle background colors
+call togglebg#map("<F5>")
+
+" This hides buffers instead of closing them
+" No more saving before you ,,
+" no more lost history and marks when you ,,
+" MUST HAVE!
+set hidden
 
 " Allows file type detection for plugins with Vim and allows automatic
 " indentation
 filetype plugin indent on
-" Change <leader=","
-let mapleader=',' 
 
-" Solarized Colorscheme
-syntax enable 
-set background=dark
-colorscheme solarized
+" Change leader to ,
+let mapleader=','
+
+" Axe swap and backup flies
+set nobackup
+set noswapfile
+
+" show trailing whitespace, tabs and lines extending off the page
+set list
+set listchars=tab:\|\ ,trail:.,extends:#,nbsp:.
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ----------------------------------- Custom Keymaps
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Edit .vimrc
+nmap <silent> <Leader>ev :e ~/.vimrc<CR>
+
+" Save a file with sudo
+cmap w!! w !sudo tee %
+
+" buffer toggle
+nmap <Leader><Leader> <C-^>
+
+" set ,d to delete current file
+nmap <Leader>d :call delete(expand('%'))<CR>
+
+" jj escapes insert mode
+imap jj <C-c>
+
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Splitting
@@ -35,13 +86,17 @@ nnoremap <Leader><C-L> :tabNext<CR>
 nnoremap <Leader><C-H> :tabprevious<CR>
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- Numbering 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set relativenumber
 " Show current line number
 " au BufReadPost,BufNewFile * set relativenumber
 set number
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- SEARCHING
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Incsearch searches the document for a string each time a character is added
 " to the string 
 set incsearch
@@ -54,8 +109,10 @@ set ignorecase
 " string
 set smartcase
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------ LANGUAGES --------------------
-" Set scss as css files 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set scss as css files for syntax highlighting
 autocmd BufNewFile,BufRead *.scss set ft=scss.css
 
 
@@ -64,7 +121,9 @@ autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- LaTeX
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Force grep to display filenames even when searching through a single file
 " This has something to do with autocomplete in latex
 set grepprg=grep\ -nH\ $*
@@ -75,21 +134,9 @@ let g:tex_flavor='latex'
 let g:Tex_DefaultTargetFormat = 'pdf'
 "let g:Tex_ViewRule_pdf = 'fbpdf' 
 
-" ----------------------------------- Custom Keymaps
-
-" Save a file with sudo 
-cmap w!! w !sudo tee %
-
-" set file toggle
-nmap <Leader><Leader> <C-^>
-
-" set ,d to delete current file
-nmap <Leader>d :call delete(expand('%'))<CR>
-
-" jj escapes insert mode and saves doc
-imap jj <C-c>:w<CR>
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- ctrl-P Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:ctrlp_follow_symlinks = 1
 " let g:ctrlp_working_path_mode = 0
@@ -97,20 +144,21 @@ let g:ctrlp_follow_symlinks = 1
 " let g:ctrlp_switch_buffer = 0
 " let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
 let g:ctrlp_custom_ignore = {
-	\ 'dir':	'\v[\/]\.git$|.*/db/migrate|.*/cache',
+	\ 'dir':'\v[\/]\.git$|.*/db/migrate|.*/cache',
 	\ }
 
-"--------------- ----------------------------------- Misc Settings
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- Ctags
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Searches for tags file in current folder and works its way up to
 " root looking for one.
 set tags=./tags;/
 
-" Word wrapping at edge of window
-set wrap
+" No word wrapping at edge of window
+set nowrap
+
+
 set linebreak
-set nolist
 
 " Current file directory expansion
 cnoremap %% <C-R>=expand('%:p:h').'/'<cr>
@@ -119,7 +167,7 @@ cnoremap %% <C-R>=expand('%:p:h').'/'<cr>
 setlocal spell spelllang=en_us
 
 " The minimum number of lines to show above/below the cursor
-set scrolloff=5
+set scrolloff=15
 
 " toggles between set paste && set nopaste
 " paste mode disables autoindenting so you can paste shit into vim happily
@@ -132,12 +180,6 @@ set tabstop=2 shiftwidth=2 expandtab
 set noexpandtab|retab! "Use tabs, not spaces
 
 set ttymouse=urxvt
-
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-
-" This is set in case this file is ever loaded with the -u flag, otherwise it
-" is redundant as far as I can tell
-set nocompatible																			 
 
 " Reloads vim when the .vimrc gets modified
 augroup myvimrc

@@ -1,3 +1,13 @@
+! Turn off scroll bar
+URxvt.scrollBar: false
+
+
+! FONT
+URxvt.font: xft:InputMonoNarrow-Regular
+URxvt.letterSpace: 0
+
+
+
 URxvt.intensityStyles: false
 ! Solarized color scheme for the X Window System
 !

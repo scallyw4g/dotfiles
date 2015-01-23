@@ -61,6 +61,12 @@ let g:airline_powerline_fonts = 1
 " Edit .vimrc
 nmap <silent> <Leader>ev :e ~/.vimrc<CR>
 
+" Save all files
+nmap <silent> <Leader>S :wa<CR>
+
+" Save current buffer
+nmap <silent> <Leader>s :w<CR>
+
 " Save a file with sudo
 cmap w!! w !sudo tee %
 
@@ -74,6 +80,13 @@ nmap <Leader>d :call delete(expand('%'))<CR>
 imap jj <C-c>
 
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------ Folding
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set foldmethod=syntax
+set foldlevelstart=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Splitting

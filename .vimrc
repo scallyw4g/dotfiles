@@ -76,11 +76,6 @@ nmap <Leader><Leader> <C-^>
 " set ,d to delete current file
 nmap <Leader>d :call delete(expand('%'))<CR>
 
-" jj escapes insert mode
-imap jj <C-c>
-
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Folding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -95,10 +90,10 @@ set foldlevelstart=1
 set splitbelow
 set splitright
 
-nnoremap <Leader>h <C-W><C-H>
-nnoremap <Leader>j <C-W><C-j>
-nnoremap <Leader>k <C-W><C-k>
-nnoremap <Leader>l <C-W><C-l>
+nnoremap <C-h> <C-W><C-H>
+nnoremap <C-j> <C-W><C-j>
+nnoremap <C-k> <C-W><C-k>
+nnoremap <C-l> <C-W><C-l>
 
 nnoremap <Leader>> <C-w>10>
 nnoremap <Leader>< <C-w>10<

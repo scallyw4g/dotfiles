@@ -15,7 +15,7 @@ setopt completealiases
 # Set prompt styling
 
 autoload -Uz vcs_info
- 
+
 zstyle ':vcs_info:*' stagedstr '%F{28}●'
 zstyle ':vcs_info:*' unstagedstr '%F{11}●'
 zstyle ':vcs_info:*' check-for-changes true
@@ -27,23 +27,27 @@ precmd () {
     } else {
         zstyle ':vcs_info:*' formats ' [%F{green}%b%c%u%F{red}●%F{blue}]'
     }
- 
+
     vcs_info
 }
- 
+
 setopt prompt_subst
 PROMPT='%F{blue}%n@%m %c${vcs_info_msg_0_}%F{blue} %(?/%F{blue}/%F{red})%% %{$reset_color%}'
 
 
 # End of lines added by compinstall
-# Lines configured by zsh-newuser-install
+
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=3000
 setopt appendhistory autocd
 unsetopt beep
+
+# vi mode
 bindkey -v
-# End of lines configured by zsh-newuser-install
+
+# kill lag when escaping to vi mode
+export KEYTIMEOUT=1
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then

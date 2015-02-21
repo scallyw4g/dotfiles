@@ -19,8 +19,7 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:*' stagedstr '%F{28}●'
 zstyle ':vcs_info:*' unstagedstr '%F{11}●'
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{11}%r'
-zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' enable git
 precmd () {
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
         zstyle ':vcs_info:*' formats ' [%F{green}%b%c%u%F{blue}]'
@@ -32,8 +31,8 @@ precmd () {
 }
 
 setopt prompt_subst
-PROMPT='%F{blue}%n@%m %c${vcs_info_msg_0_}%F{blue} %(?/%F{blue}/%F{red})%% %{$reset_color%}'
-
+PROMPT='%F{blue} %c${vcs_info_msg_0_}%F{blue} %(?/%F{blue}/%F{red})%% %{$reset_color%} %F{blue}'
+RPROMPT='%n@%m'
 
 # End of lines added by compinstall
 
@@ -65,6 +64,9 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias l.='ls -ld .[^.]*'
+alias md='mkdir -p'
+alias ..='cd ..'
 
 # Alias for hub
 eval "$(hub alias -s)"

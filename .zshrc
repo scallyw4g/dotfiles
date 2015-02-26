@@ -122,6 +122,11 @@ alias ..='cd ..'
 # Alias for hub
 eval "$(hub alias -s)"
 
+# Alias for compiling NPOI mono projects
+alias nmcs='mcs -pkg:dotnet -r:/home/scallywag/www/npoi-dotnet4/NPOI.dll '
+
+export EDITOR=vim
+
 # Rbenv stuff
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
@@ -129,4 +134,5 @@ eval "$(rbenv init -)"
 export PGDATA="/var/lib/postgres/data"
 export PATH=$HOME/bin:$PATH
 
-export EDITOR=vim
+export MONO_PATH=/home/scallywag/www/test-mono-app/NPOI-Binary/dotnet4
+export MCS_COLORS=errors=red

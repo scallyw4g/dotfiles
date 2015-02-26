@@ -61,6 +61,9 @@ let g:airline_powerline_fonts = 1
 " Edit .vimrc
 nmap <silent> <Leader>ev :e ~/.vimrc<CR>
 
+" Edit .zshrc
+nmap <silent> <Leader>ez :e ~/.zshrc<CR>
+
 " Save all files
 nmap <silent> <Leader>S :wa<CR>
 

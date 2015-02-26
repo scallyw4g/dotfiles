@@ -103,12 +103,6 @@ export KEYTIMEOUT=1
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
 fi
 
 # some more ls aliases
@@ -124,6 +118,9 @@ eval "$(hub alias -s)"
 
 # Alias for compiling NPOI mono projects
 alias nmcs='mcs -pkg:dotnet -r:/home/scallywag/www/npoi-dotnet4/NPOI.dll '
+
+# Alias for starting windows VM
+alias gogoGadgetWindows='vboxmanage startvm Windows7-64bit'
 
 export EDITOR=vim
 

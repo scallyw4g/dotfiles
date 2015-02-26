@@ -23,12 +23,12 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'bling/vim-airline'
 call vundle#end()
 
-" Allows file type detection for plugins with Vim and allows automatic
-" indentation
-filetype plugin indent on
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "----------------------------------- Misc Custom Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Allows file type detection for plugins with Vim and allows automatic
+" indentation
+filetype plugin indent on
 
 " Solarized Colorscheme
 syntax enable

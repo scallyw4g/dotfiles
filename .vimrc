@@ -4,11 +4,28 @@
 set nocompatible
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- Pathogen settings
+" ----------------------------------- Vundle settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-execute pathogen#infect()
-syntax on
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
 
+Plugin 'altercation/vim-colors-solarized'
+
+Plugin 'valloric/youcompleteme'
+Plugin 'scrooloose/syntastic'
+
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
+Plugin 'kien/ctrlp.vim'
+
+Plugin 'bling/vim-airline'
+call vundle#end()
+
+" Allows file type detection for plugins with Vim and allows automatic
+" indentation
+filetype plugin indent on
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "----------------------------------- Misc Custom Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -27,9 +44,6 @@ call togglebg#map("<F5>")
 " MUST HAVE!
 set hidden
 
-" Allows file type detection for plugins with Vim and allows automatic
-" indentation
-filetype plugin indent on
 
 " Change leader to ,
 let mapleader=','

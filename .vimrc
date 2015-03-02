@@ -14,10 +14,13 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 
 Plugin 'valloric/youcompleteme'
+Plugin 'omnisharp/omnisharp-vim'
+Plugin 'tpope/vim-dispatch'
 Plugin 'scrooloose/syntastic'
 
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-fugitive'
 Plugin 'kien/ctrlp.vim'
 
 Plugin 'bling/vim-airline'
@@ -34,6 +37,7 @@ filetype plugin indent on
 syntax enable
 set background=dark
 colorscheme solarized
+highlight clear SignColumn
 
 " Toggle background colors
 call togglebg#map("<F5>")
@@ -47,6 +51,9 @@ set hidden
 
 " Change leader to ,
 let mapleader=','
+
+" Setting for eclim/YCM completion
+let g:EclimCompletionMethod = 'omnifunc'
 
 
 
@@ -94,14 +101,17 @@ nmap <Leader><Leader> <C-^>
 nmap <Leader>d :call delete(expand('%'))<CR>
 
 " esc insert mode
-imap jk <C-c>
+imap jk <esc>
+
+" break <C-c>; it doesn't fire esc-insert-mode hooks, which is bad apparently
+inoremap <C-c> Stopit
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Folding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set foldmethod=syntax
-set foldlevelstart=1
+set foldlevelstart=100
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Splitting

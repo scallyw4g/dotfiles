@@ -39,8 +39,12 @@ set background=dark
 colorscheme solarized
 highlight clear SignColumn
 
+highlight SpecialKey ctermfg=10 ctermbg=8 cterm=NONE
+highlight LineNr ctermfg=12 ctermbg=8
+highlight CursorLineNr ctermfg=5 ctermbg=8
+
 " Toggle background colors
-call togglebg#map("<F5>")
+call togglebg#map("<F9>")
 
 " This hides buffers instead of closing them
 " No more saving before you ,,
@@ -104,7 +108,13 @@ nmap <Leader>d :call delete(expand('%'))<CR>
 imap jk <esc>
 
 " break <C-c>; it doesn't fire esc-insert-mode hooks, which is bad apparently
-inoremap <C-c> Stopit
+map <C-c> Stopit
+
+" Maven clean/build
+
+map <F4> :Mvn clean<CR>
+map <F5> :Mvn package<CR>
+map <F6> :Java<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Folding

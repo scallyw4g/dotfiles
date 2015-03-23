@@ -18,6 +18,8 @@ Plugin 'omnisharp/omnisharp-vim'
 Plugin 'tpope/vim-dispatch'
 Plugin 'scrooloose/syntastic'
 
+Plugin 'sirver/ultisnips'
+
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
@@ -42,6 +44,7 @@ highlight clear SignColumn
 highlight SpecialKey ctermfg=10 ctermbg=8 cterm=NONE
 highlight LineNr ctermfg=12 ctermbg=8
 highlight CursorLineNr ctermfg=5 ctermbg=8
+highlight folded cterm=bold ctermbg=8 ctermfg=10
 
 " Toggle background colors
 call togglebg#map("<F9>")
@@ -52,23 +55,32 @@ call togglebg#map("<F9>")
 " MUST HAVE!
 set hidden
 
-
 " Change leader to ,
 let mapleader=','
 
 " Setting for eclim/YCM completion
 let g:EclimCompletionMethod = 'omnifunc'
 
-
-
-
 " Axe swap and backup flies
+" http://jeffkreeftmeijer.com/2010/git-your-act-together/
 set nobackup
 set noswapfile
+
+" Automatically read in changed files with no annoying prompt
+set autoread
+
+" Show relative line numbers
+set relativenumber
+" except for the line the cursor is on - show the actual line number
+set number
 
 " show trailing whitespace, tabs and lines extending off the page
 set list
 set listchars=tab:\|\ ,trail:.,extends:#,nbsp:.
+
+" No word wrapping at edge of window
+set nowrap
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- STATUSLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -77,7 +89,6 @@ set laststatus=2
 
 " Powerline font
 let g:airline_powerline_fonts = 1
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- Custom Keymaps
@@ -88,6 +99,9 @@ nmap <silent> <Leader>ev :e ~/.vimrc<CR>
 
 " Edit .zshrc
 nmap <silent> <Leader>ez :e ~/.zshrc<CR>
+
+" Edit current filetypes snippets file
+nmap <silent> <Leader>es :UltiSnipsEdit<CR>
 
 " Save all files
 nmap <silent> <Leader>S :wa<CR>
@@ -107,21 +121,21 @@ nmap <Leader>d :call delete(expand('%'))<CR>
 " esc insert mode
 imap jk <esc>
 
-" break <C-c>; it doesn't fire esc-insert-mode hooks, which is bad apparently
+" break <C-c>; it doesn't fire InsertLeave autocommands, which is bad apparently
+" http://valloric.github.io/YouCompleteMe/#faq
 map <C-c> Stopit
 
 " Maven clean/build
-
-map <F4> :Mvn clean<CR>
-map <F5> :Mvn package<CR>
-map <F6> :Java<CR>
+" map <F4> :Mvn clean<CR>
+map <F5> :Mvn clean package<CR>
+map <F6> :Mvn clean package<CR>:Java<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Folding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set foldmethod=syntax
-set foldlevelstart=100
+set foldlevelstart=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Splitting
@@ -131,7 +145,7 @@ set splitbelow
 set splitright
 
 nnoremap <C-h> <C-W><C-H>
-nnoremap <C-j> <C-W><C-j>
+" nnoremap <C-j> <C-W><C-j>
 nnoremap <C-k> <C-W><C-k>
 nnoremap <C-l> <C-W><C-l>
 
@@ -145,20 +159,12 @@ nnoremap <Leader><C-l> :tabnext<CR>
 nnoremap <Leader><C-h> :tabprevious<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- Numbering
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set relativenumber
-" Show current line number
-" au BufReadPost,BufNewFile * set relativenumber
-set number
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- SEARCHING
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Incsearch searches the document for a string each time a character is added
 " to the string
 set incsearch
-" Search Highlighting is fucking annoying
+" Search Highlighting is annoying
 " set hlsearch
 
 " Ignores case sensitivity when searching for a string
@@ -168,29 +174,45 @@ set ignorecase
 set smartcase
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ------------------------------ LANGUAGES --------------------
+" ----------------------------------- Ultisnips Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set scss as css files for syntax highlighting
-autocmd BufNewFile,BufRead *.scss set ft=scss.css
 
+" My vim hasn't been compiled with python3 support;
+" force ultisnips to use python2
+let g:UltiSnipsUsePythonVersion = 2
 
-" ----------------------------------- Ruby and Rails autocomplete
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+" Set trigger combo to ctrl-j
+let g:UltiSnipsExpandTrigger="<c-f>"
+let g:UltiSnipsJumpForwardTrigger="<c-f>"
+let g:UltiSnipsJumpBackwardTrigger="<c-F>"
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- LaTeX
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Force grep to display filenames even when searching through a single file
-" This has something to do with autocomplete in latex
-set grepprg=grep\ -nH\ $*
-" So empty .tex files still load vim-latex
-let g:tex_flavor='latex'
+" Set UltiSnipEdit to open in a vertical split
+let g:UltiSnipsEditSplit = 'vertical'
 
-"let g:Tex_CompileRule_pdf = 'pdflatex --interaction=nonstopmode $*'
-let g:Tex_DefaultTargetFormat = 'pdf'
-"let g:Tex_ViewRule_pdf = 'fbpdf'
+" Some SO magic..
+function! g:UltiSnips_Complete()
+		call UltiSnips#ExpandSnippet()
+		if g:ulti_expand_res == 0
+				if pumvisible()
+						return "\<C-n>"
+				else
+						call UltiSnips#JumpForwards()
+						if g:ulti_jump_forwards_res == 0
+							 return "\<TAB>"
+						endif
+				endif
+		endif
+		return ""
+endfunction
+
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsListSnippets="<c-e>"
+" this mapping Enter key to <C-y> to chose the current highlight item 
+" and close the selection list, same as other IDEs.
+" CONFLICT with some plugins like tpope/Endwise
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- ctrl-P Settings
@@ -206,15 +228,36 @@ let g:ctrlp_custom_ignore = {
 	\ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ----------------------------------- LaTeX
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Force grep to display filenames even when searching through a single file
+" This has something to do with autocomplete in latex
+set grepprg=grep\ -nH\ $*
+
+" So empty .tex files still load vim-latex
+let g:tex_flavor='latex'
+
+"let g:Tex_CompileRule_pdf = 'pdflatex --interaction=nonstopmode $*'
+let g:Tex_DefaultTargetFormat = 'pdf'
+"let g:Tex_ViewRule_pdf = 'fbpdf'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------ LANGUAGES --------------------
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set scss as css files for syntax highlighting
+autocmd BufNewFile,BufRead *.scss set ft=scss.css
+
+" ----------------------------------- Ruby and Rails autocomplete
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- Ctags
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Searches for tags file in current folder and works its way up to
 " root looking for one.
 set tags=./tags;/
-
-" No word wrapping at edge of window
-set nowrap
-
 
 set linebreak
 
@@ -263,8 +306,12 @@ function! UpdateVimRC()
 
 augroup myvimrchooks
 au!
-	autocmd bufwritepost .vimrc call UpdateVimRC()
- augroup END
+
+autocmd bufwritepost .vimrc call UpdateVimRC()
+augroup END
+
+" Closes the scratch window after a completion
+ autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 
 ""function MkNonExDir(file, buf)

@@ -1,5 +1,8 @@
 # The following lines were added by compinstall
 
+# Disable <C-s> scroll-lock / SFC on-off
+stty -ixon
+
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle :compinstall filename '/home/scallywag/.zshrc'
 
@@ -118,9 +121,6 @@ eval "$(hub alias -s)"
 
 # Alias for compiling NPOI mono projects
 alias nmcs='mcs -pkg:dotnet -r:/home/scallywag/www/npoi-dotnet4/NPOI.dll '
-
-# Alias for starting windows VM
-alias gogoGadgetWindows='vboxmanage startvm Windows7-64bit'
 
 export EDITOR=vim
 

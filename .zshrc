@@ -1,7 +1,5 @@
-# The following lines were added by compinstall
-
-# Disable <C-s> scroll-lock / SFC on-off
-stty -ixon
+# Duh
+export EDITOR=vim
 
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle :compinstall filename '/home/scallywag/.zshrc'
@@ -15,8 +13,12 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*' menu select
 setopt completealiases
 
-# Set prompt styling
+# Completion for lowercase vbox commands
+compdef vboxmanage=VBoxManage
+compdef vboxheadless=VBoxHeadless
 
+
+# Set prompt styling
 # Adapted from code found at <https://gist.github.com/1712320>.
 
 setopt prompt_subst
@@ -88,8 +90,7 @@ RPS1='$(git_prompt_string)'
 
 PROMPT='%F{blue}%n@%m %c${vcs_info_msg_0_}%F{blue} %(?/%F{blue}/%F{red})%% %F{blue}'
 
-# End of lines added by compinstall
-
+# Increase history size
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=3000
@@ -119,11 +120,6 @@ alias ..='cd ..'
 # Alias for hub
 eval "$(hub alias -s)"
 
-# Alias for compiling NPOI mono projects
-alias nmcs='mcs -pkg:dotnet -r:/home/scallywag/www/npoi-dotnet4/NPOI.dll '
-
-export EDITOR=vim
-
 # Rbenv stuff
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
@@ -133,3 +129,8 @@ export PATH=$HOME/bin:$PATH
 
 export MONO_PATH=/home/scallywag/www/test-mono-app/NPOI-Binary/dotnet4
 export MCS_COLORS=errors=red
+# Alias for compiling NPOI mono projects
+alias nmcs='mcs -pkg:dotnet -r:/home/scallywag/www/npoi-dotnet4/NPOI.dll '
+
+# Disable <C-s> scroll-lock / SFC on-off
+stty -ixon

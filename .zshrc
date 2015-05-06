@@ -3,7 +3,7 @@ export EDITOR=vim
 
 # Check for local tree.sh for custom command or fall back to default tree
 tree () {
-	if [ -x "./tree.sh" ]; then
+	if [ -x "./tree.sh" ] && [ $# -eq 0 ]; then
 		./tree.sh
 	else
 		command tree $*

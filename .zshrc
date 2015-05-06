@@ -1,6 +1,15 @@
 # Duh
 export EDITOR=vim
 
+# Check for local tree.sh for custom command or fall back to default tree
+tree () {
+	if [ -x "./tree.sh" ]; then
+		./tree.sh
+	else
+		command tree $*
+	fi
+}
+
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle :compinstall filename '/home/scallywag/.zshrc'
 

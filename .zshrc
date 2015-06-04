@@ -1,6 +1,11 @@
 # Duh
 export EDITOR=vim
 
+# some completion speeding
+__git_files () {
+    _wanted files expl 'local files' _files
+}
+
 # Check for local tree.sh for custom command or fall back to default tree
 tree () {
 	if [ -x "./tree.sh" ] && [ $# -eq 0 ]; then
@@ -20,6 +25,7 @@ compinit
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*' menu select
+zstyle ':completion:*' accept-exact '*(N)'
 setopt completealiases
 
 # Completion for lowercase vbox commands
@@ -94,10 +100,27 @@ git_prompt_string() {
   [ -n "$git_where" ] && echo "$GIT_PROMPT_SYMBOL$(parse_git_state)$GIT_PROMPT_PREFIX%{$fg[yellow]%}${git_where#(refs/heads/|tags/)}$GIT_PROMPT_SUFFIX"
 }
 
+# Functions to be fired before prompt is printed
+precmd_functions=(stopJobsCount)
+
+# possibly provides access to $#jobstates associative array
+# zmodload zsh/parameter
+
+stopJobsCount () {
+	local stopJobs=$#jobstates
+	if [ $stopJobs = '0' ]; then
+		STOPPEDJOBS=''
+	elif [ $stopJobs = '1' ]; then
+		STOPPEDJOBS=$stopJobs' job '
+	else
+		STOPPEDJOBS=$stopJobs' jobs '
+	fi
+}
+
 # Set the right-hand prompt
 RPS1='$(git_prompt_string)'
 
-PROMPT='%F{blue}%n@%m %c${vcs_info_msg_0_}%F{blue} %(?/%F{blue}/%F{red})%% %F{blue}'
+PROMPT='%F{blue}%n@%m %F{yellow}$STOPPEDJOBS%F{blue}%c${vcs_info_msg_0_} %(?/%F{blue}/%F{red})%% %F{blue}'
 
 # Increase history size
 HISTFILE=~/.histfile
@@ -125,6 +148,8 @@ alias l='ls -CF'
 alias l.='ls -ld .[^.]*'
 alias md='mkdir -p'
 alias ..='cd ..'
+alias gcam='git commit -am'
+alias gcm='git commit -m'
 
 # Alias for hub
 eval "$(hub alias -s)"

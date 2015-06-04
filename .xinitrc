@@ -15,7 +15,7 @@ conky -c $HOME/.scripts/conkyrc-main &
 # gcal conky
 conky -c $HOME/.scripts/conkyrc-gcal &
 # Taskwarrior conky
-exec conky -c ~/.scripts/conky-taskwarrior &
+exec conky -c $HOME/.scripts/conky-taskwarrior &
 
 # Remap Caps-lock from xmodmaprc
 setxkbmap -option ctrl:nocaps

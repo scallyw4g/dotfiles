@@ -25,6 +25,8 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'kien/ctrlp.vim'
 
+Plugin 'mileszs/ack.vim'
+
 Plugin 'bling/vim-airline'
 call vundle#end()
 
@@ -123,7 +125,7 @@ imap jk <esc>
 
 " break <C-c>; it doesn't fire InsertLeave autocommands, which is bad apparently
 " http://valloric.github.io/YouCompleteMe/#faq
-map <C-c> Stopit
+map <C-c> <esc>iStopit<esc>
 
 " Maven clean/build
 " map <F4> :Mvn clean<CR>
@@ -188,31 +190,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-F>"
 
 " Set UltiSnipEdit to open in a vertical split
 let g:UltiSnipsEditSplit = 'vertical'
-
-" Some SO magic..
-function! g:UltiSnips_Complete()
-		call UltiSnips#ExpandSnippet()
-		if g:ulti_expand_res == 0
-				if pumvisible()
-						return "\<C-n>"
-				else
-						call UltiSnips#JumpForwards()
-						if g:ulti_jump_forwards_res == 0
-							 return "\<TAB>"
-						endif
-				endif
-		endif
-		return ""
-endfunction
-
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsListSnippets="<c-e>"
-" this mapping Enter key to <C-y> to chose the current highlight item 
-" and close the selection list, same as other IDEs.
-" CONFLICT with some plugins like tpope/Endwise
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- ctrl-P Settings

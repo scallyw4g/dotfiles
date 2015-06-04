@@ -8,6 +8,8 @@ bg_rotate & # rotate bg image  *NOTE this script is set to run in the background
 
 compton  & # start compton in the background
 
+# Start MPD
+mpd
 
 ##############  INIT CONKYS
 # main conky

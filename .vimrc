@@ -222,7 +222,9 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 " ------------------------------ LANGUAGES --------------------
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set scss as css files for syntax highlighting
-autocmd BufNewFile,BufRead *.scss set ft=scss.css
+autocmd BufNewFile,BufRead *.scss set ft=css
+" Set deface as html
+autocmd BufNewFile,BufRead *.deface set ft=html
 
 " ----------------------------------- Ruby and Rails autocomplete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1

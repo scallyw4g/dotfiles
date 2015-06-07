@@ -148,8 +148,13 @@ alias l='ls -CF'
 alias l.='ls -ld .[^.]*'
 alias md='mkdir -p'
 alias ..='cd ..'
+
+# Git aliases
 alias gcam='git commit -am'
 alias gcm='git commit -m'
+alias gl='git log --pretty=oneline'
+alias gs='git status'
+alias gd='git diff'
 
 # Alias for hub
 eval "$(hub alias -s)"

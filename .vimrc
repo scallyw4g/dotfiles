@@ -20,6 +20,8 @@ Plugin 'scrooloose/syntastic'
 
 Plugin 'sirver/ultisnips'
 
+Plugin 'vim-scripts/autoclose'
+
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'

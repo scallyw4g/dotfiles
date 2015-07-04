@@ -1,3 +1,6 @@
+
+. ~/.env_credentials
+
 # Duh
 export EDITOR=vim
 

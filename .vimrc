@@ -13,9 +13,10 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin 'altercation/vim-colors-solarized'
 
-Plugin 'valloric/youcompleteme'
 Plugin 'omnisharp/omnisharp-vim'
 Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-rake'
+Plugin 'tpope/vim-bundler'
 Plugin 'scrooloose/syntastic'
 
 Plugin 'sirver/ultisnips'
@@ -198,13 +199,14 @@ let g:UltiSnipsEditSplit = 'vertical'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:ctrlp_follow_symlinks = 1
-" let g:ctrlp_working_path_mode = 0
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_root_markers = ['Gemfile']
 " let g:ctrlp_dotfiles = 0
 " let g:ctrlp_switch_buffer = 0
 " let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
-let g:ctrlp_custom_ignore = {
-	\ 'dir':'\v[\/]\.git$|.*/db/migrate|.*/cache',
-	\ }
+ let g:ctrlp_custom_ignore = {
+		\ 'dir':'\v[\/]\.git$|.*/db/migrate|.*/cache',
+		\ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- LaTeX

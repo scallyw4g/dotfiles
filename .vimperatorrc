@@ -5,7 +5,6 @@ let mapleader = ","
 
 " Break off/join tabs
 nm W :tabdetach<CR>
-nm <C-W> :tabattach
 
 " Intuitive tab navigation
 nm <C-h> <C-p>

@@ -1,0 +1,15 @@
+" Set characters to use for url-hints
+set hintchars=asdfjklghrueiwoyt
+
+let mapleader = ","
+
+" Break off/join tabs
+nm W :tabdetach<CR>
+nm <C-W> :tabattach
+
+" Intuitive tab navigation
+nm <C-h> <C-p>
+nm <C-l> <C-n>
+
+" Nicer link hints
+highlight Hint background-color: #ffefdb; color: black; min-width: 15px; margin-top: -3px; margin-left: -7px; text-align: center; border: 1px black solid; border-radius: 3px;

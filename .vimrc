@@ -85,6 +85,9 @@ set listchars=tab:\|\ ,trail:.,extends:#,nbsp:.
 
 " No word wrapping at edge of window
 set nowrap
+"
+" Set Vimperatorrc as vimfile
+autocmd BufNewFile,BufRead .vimperatorrc set ft=vim
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- STATUSLINE
@@ -140,7 +143,7 @@ map <F6> :Mvn clean package<CR>:Java<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set foldmethod=syntax
-set foldlevelstart=1
+set foldlevelstart=99
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Splitting

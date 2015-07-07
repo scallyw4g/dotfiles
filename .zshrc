@@ -1,4 +1,3 @@
-
 . ~/.env_credentials
 
 # Duh
@@ -167,7 +166,11 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 export PGDATA="/var/lib/postgres/data"
-export PATH=$HOME/bin:$PATH
+export PATH=$PATH:$HOME/bin
+
+# Node path
+export PATH=$PATH:~/.node_modules/bin
+export npm_config_prefix=~/.node_modules
 
 export MONO_PATH=/home/scallywag/www/test-mono-app/NPOI-Binary/dotnet4
 export MCS_COLORS=errors=red

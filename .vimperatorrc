@@ -11,4 +11,4 @@ nm <C-h> <C-p>
 nm <C-l> <C-n>
 
 " Nicer link hints
-highlight Hint background-color: #ffefdb; color: black; min-width: 15px; margin-top: -3px; margin-left: -7px; text-align: center; border: 1px black solid; border-radius: 3px;
+highlight Hint background-color: #ffefdb; color: black; min-width: 15px; padding-right: 2px; margin-top: -3px; margin-left: -7px; text-align: center; border: 1px black solid; border-radius: 5px; z-index: 10000;

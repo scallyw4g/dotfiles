@@ -1,5 +1,7 @@
 . ~/.env_credentials
 
+export IRIS_DATABASE_USER=iris
+
 # Duh
 export EDITOR=vim
 

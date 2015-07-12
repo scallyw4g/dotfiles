@@ -5,12 +5,12 @@
 
 !.gitignore
 
+# Script for installing these files and a system font
 !.install-dotfiles.sh
 !InputMonoNarrow-Regular.ttf
 
 !.i3
 
-!.scripts/*
 !.conkyrc
 
 !.vimrc

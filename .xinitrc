@@ -13,11 +13,11 @@ mpd
 
 ##############  INIT CONKYS
 # main conky
-conky -c $HOME/.scripts/conkyrc-main &
+conky -c $HOME/.scripts/conky/conkyrc-main &
 # gcal conky
-conky -c $HOME/.scripts/conkyrc-gcal &
+conky -c $HOME/.scripts/conky/conkyrc-gcal &
 # Taskwarrior conky
-exec conky -c $HOME/.scripts/conky-taskwarrior &
+exec conky -c $HOME/.scripts/conky/conky-taskwarrior &
 
 # Remap Caps-lock from xmodmaprc
 setxkbmap -option ctrl:nocaps

@@ -9,7 +9,7 @@
 !.install-dotfiles.sh
 !InputMonoNarrow-Regular.ttf
 
-!.i3
+!.i3/config
 
 !.conkyrc
 

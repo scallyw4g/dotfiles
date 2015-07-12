@@ -1,0 +1,26 @@
+# Exclude all files and  folders
+/*
+
+# Except
+
+!.gitignore
+
+!.install-dotfiles.sh
+!InputMonoNarrow-Regular.ttf
+
+!.i3
+
+!.scripts/*
+!.conkyrc
+
+!.vimrc
+!.vimperatorrc
+!.vim/bundle
+
+!.zshrc
+!.zprofile
+
+!.Xdefaults
+!.Xresources
+!.xmodmap
+!.xinitrc

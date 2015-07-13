@@ -1,4 +1,6 @@
-. ~/.env_credentials
+if [ -f $HOME/.env ]; then
+	. ~/.env
+fi
 
 export IRIS_DATABASE_USER=iris
 
@@ -162,6 +164,9 @@ alias gd='git diff'
 
 # Alias for hub
 eval "$(hub alias -s)"
+
+# Alias for yaourt
+alias pacman=yaourt
 
 # Rbenv stuff
 export PATH="$HOME/.rbenv/bin:$PATH"

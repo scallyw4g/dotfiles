@@ -46,10 +46,11 @@ set background=dark
 colorscheme solarized
 highlight clear SignColumn
 
-highlight SpecialKey ctermfg=10 ctermbg=8 cterm=NONE
-highlight LineNr ctermfg=12 ctermbg=8
-highlight CursorLineNr ctermfg=5 ctermbg=8
-highlight folded cterm=bold ctermbg=8 ctermfg=10
+highlight Normal ctermfg=12 ctermbg=NONE
+highlight SpecialKey ctermfg=10 ctermbg=NONE cterm=NONE
+highlight LineNr ctermfg=12 ctermbg=NONE
+highlight CursorLineNr ctermfg=5 ctermbg=NONE
+highlight folded cterm=bold ctermbg=NONE ctermfg=10
 
 " Toggle background colors
 call togglebg#map("<F9>")
@@ -275,8 +276,6 @@ augroup myvimrc
 augroup END
 
 	" Local Dirs
-set backupdir =~/.vim/backups
-set directory=~/.vim/swaps
 set undodir=~/.vim/undo
 
 

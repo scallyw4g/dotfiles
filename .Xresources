@@ -1,16 +1,18 @@
+#include "/home/scallywag/.Xresources-fontsize"
+
 ! Turn off scroll bar
 URxvt.scrollBar: false
 
+! Color Depth
+URxvt.depth: 32
 
 ! FONT
-URxvt.font: xft:InputMonoNarrow-Regular
+URxvt.font: xft:InputMonoNarrow-Regular:size=FONTSIZE
 URxvt.letterSpace: 0
 
 URxvt.intensityStyles: false
-! Solarized color scheme for the X Window System
-!
-! http://ethanschoonover.com/solarized
 
+! http://ethanschoonover.com/solarized
 
 ! Common
 
@@ -23,7 +25,6 @@ URxvt.intensityStyles: false
 #define S_cyan          #2aa198
 #define S_green         #859900
 
-
 ! Dark
 
 #define S_base03        #002b36
@@ -34,7 +35,8 @@ URxvt.intensityStyles: false
 #define S_base1         #93a1a1
 #define S_base2         #eee8d5
 #define S_base3         #fdf6e3
-
+! Transparency
+URxvt.background:       [95]#002b36
 
 ! Light
 
@@ -46,12 +48,8 @@ URxvt.intensityStyles: false
 ! #define S_base1         #586e75
 ! #define S_base2         #073642
 ! #define S_base3         #002b36
-
-
-! To only apply colors to your terminal, for example, prefix
-! the color assignment statement with its name. Example:
-!
-! URxvt*background:            S_base03
+!! Transparency
+! URxvt.background:       [95]#fdf6e3
 
 *background:              S_base03
 *foreground:              S_base0

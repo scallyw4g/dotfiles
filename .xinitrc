@@ -3,15 +3,31 @@
 # Swap Ctrl and Caps Lock
  setxkbmap -option ctrl:swapcaps 
 
-[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources &		# append contents of Xresources
-bg_rotate & # rotate bg image  *NOTE this script is set to run in the background (& suffix)
+# Set font size for i3 based on value in .Xfontsize
+# This sets FONTSIZE variable
+source $HOME/.Xfontsize
+sed "s/font xft:InputMonoNarrow-Regular/font xft:InputMonoNarrow-Regular $FONTSIZE/g" $HOME/.i3/config > $HOME/.i3/liveconfig
 
-compton  & # start compton in the background
+# Set font size for Xresources
+echo "#define FONTSIZE $FONTSIZE" > $HOME/.Xresources-fontsize 
+# And include Xresources
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources &
+
+# Background
+nitrogen --restore &
+
+# start compton
+compton  &
 
 # Start MPD
 mpd
 
-##############  INIT CONKYS
+# Disable trackpad on keystrokes (Ignoreing modifier keycombos with -K)
+syndaemon -d -K -i 0.25
+
+## CONKYS
+# get interface we're connected on for conkyi3
+export interface=`ip addr show | ack 'state UP' | awk '{ print $2 }' | sed 's/://'`
 # main conky
 conky -c $HOME/.scripts/conky/conkyrc-main &
 # gcal conky
@@ -19,9 +35,5 @@ conky -c $HOME/.scripts/conky/conkyrc-gcal &
 # Taskwarrior conky
 exec conky -c $HOME/.scripts/conky/conky-taskwarrior &
 
-# Remap Caps-lock from xmodmaprc
-setxkbmap -option ctrl:nocaps
-
-exec i3 # start the i3 window manager
-
-
+# Start i3 with the live config generated above
+exec i3 -c $HOME/.i3/liveconfig # start the i3 window manager

@@ -12,6 +12,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'crusoexia/vim-monokai'
 
 Plugin 'omnisharp/omnisharp-vim'
 Plugin 'tpope/vim-dispatch'
@@ -51,6 +52,7 @@ highlight SpecialKey ctermfg=10 ctermbg=NONE cterm=NONE
 highlight LineNr ctermfg=12 ctermbg=NONE
 highlight CursorLineNr ctermfg=5 ctermbg=NONE
 highlight folded cterm=bold ctermbg=NONE ctermfg=10
+highlight SpellBad ctermbg=NONE
 
 " Toggle background colors
 call togglebg#map("<F9>")
@@ -84,6 +86,11 @@ set number
 set list
 set listchars=tab:\|\ ,trail:.,extends:#,nbsp:.
 
+" Strip trailing whitespace on every save
+function! StripWS()
+	:%s/\s\+$//e
+endfunction
+
 " No word wrapping at edge of window
 set nowrap
 "
@@ -109,6 +116,12 @@ nmap <silent> <Leader>ev :e ~/.vimrc<CR>
 " Edit .zshrc
 nmap <silent> <Leader>ez :e ~/.zshrc<CR>
 
+" Edit bspwmrc
+nmap <silent> <Leader>eb :e ~/.config/bspwm/bspwmrc<CR>
+
+" Edit bspwmrc
+nmap <silent> <Leader>ex :e ~/.config/sxhkd/sxhkdrc<CR>
+
 " Edit current filetypes snippets file
 nmap <silent> <Leader>es :UltiSnipsEdit<CR>
 
@@ -117,6 +130,9 @@ nmap <silent> <Leader>S :wa<CR>
 
 " Save current buffer
 nmap <silent> <Leader>s :w<CR>
+
+" Open Gblame
+nmap <Leader>gb :Gblame<CR>
 
 " Save a file with sudo
 cmap w!! w !sudo tee %
@@ -255,7 +271,7 @@ cnoremap %% <C-R>=expand('%:p:h').'/'<cr>
 setlocal spell spelllang=en_us
 
 " The minimum number of lines to show above/below the cursor
-set scrolloff=15
+set scrolloff=7
 
 " toggles between set paste && set nopaste
 " paste mode disables autoindenting so you can paste shit into vim happily
@@ -267,6 +283,7 @@ set clipboard=unnamed
 set tabstop=2 shiftwidth=2 expandtab
 set noexpandtab|retab! "Use tabs, not spaces
 
+set mouse=a
 set ttymouse=urxvt
 
 " Reloads vim when the .vimrc gets modified
@@ -296,7 +313,7 @@ autocmd bufwritepost .vimrc call UpdateVimRC()
 augroup END
 
 " Closes the scratch window after a completion
- autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
+" autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 
 ""function MkNonExDir(file, buf)

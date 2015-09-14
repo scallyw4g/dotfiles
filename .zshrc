@@ -7,6 +7,9 @@ export IRIS_DATABASE_USER=iris
 # Duh
 export EDITOR=vim
 
+# Manage ssh-agents with keychain
+eval $(keychain --eval --agents ssh -Q --quiet $HOME/.ssh/jesse-yipida-rsa)
+
 # some completion speeding
 __git_files () {
     _wanted files expl 'local files' _files
@@ -33,6 +36,19 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*' menu select
 zstyle ':completion:*' accept-exact '*(N)'
 setopt completealiases
+#
+# And set some styles...
+zstyle ':completion:*:descriptions' format "- %d -"
+zstyle ':completion:*:corrections' format "- %d - (errors %e})"
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+zstyle ':completion:*' menu select
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' rehash yes
+zstyle -e ':completion:*:approximate:*' max-errors \
+          'reply=( $(( ($#PREFIX + $#SUFFIX) / 3 )) )'
 
 # Completion for lowercase vbox commands
 compdef vboxmanage=VBoxManage
@@ -126,7 +142,7 @@ stopJobsCount () {
 # Set the right-hand prompt
 RPS1='$(git_prompt_string)'
 
-PROMPT='%F{blue}%n@%m %F{yellow}$STOPPEDJOBS%F{blue}%c${vcs_info_msg_0_} %(?/%F{blue}/%F{red})%% %F{blue}'
+PROMPT='%F{blue}  %(?/─── /── %F{red}!) %F{blue}%c %F{yellow}$STOPPEDJOBS%F{blue}'
 
 # Increase history size
 HISTFILE=~/.histfile
@@ -148,7 +164,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -alFh'
 alias la='ls -A'
 alias l='ls -CF'
 alias l.='ls -ld .[^.]*'
@@ -156,14 +172,31 @@ alias md='mkdir -p'
 alias ..='cd ..'
 
 # Git aliases
-alias gcam='git commit -am'
-alias gcm='git commit -m'
-alias gl='git log --pretty=oneline'
+alias gca='git commit -a'
+alias gc='git commit'
+
+alias gl='git log --pretty="%C(auto) %h %s"'
+alias gls='git log --pretty="%C(auto) %h %s" | head -n 20' # Think `git log short`
+alias glt='gl --after="yesterday"' # Think `git log today`
+
 alias gs='git status'
+
 alias gd='git diff'
+alias gdw='git diff -w'
+
+alias gdc='git diff --cached'
+alias gdcw='git diff --cached -w'
+
+alias gpr='git pull-request -b tst_master'
+
+alias gr='git reset HEAD'
+alias grh='git reset --hard HEAD'
 
 # Alias for hub
 eval "$(hub alias -s)"
+
+# Alias for MySql Workbench
+alias mysql-workbench='vncdesk 1'
 
 # Alias for yaourt
 alias pacman=yaourt
@@ -172,12 +205,21 @@ alias pacman=yaourt
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# Ruby build stuff
+export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+
+# export PATH="$HOME/.phpenv/bin:$PATH"
+# eval "$(phpenv init -)"
+
 export PGDATA="/var/lib/postgres/data"
 export PATH=$PATH:$HOME/bin
 
 # Node path
 export PATH=$PATH:~/.node_modules/bin
 export npm_config_prefix=~/.node_modules
+
+# apm
+export PATH=$PATH:~/etc/apm/bin/
 
 export MONO_PATH=/home/scallywag/www/test-mono-app/NPOI-Binary/dotnet4
 export MCS_COLORS=errors=red
@@ -186,3 +228,6 @@ alias nmcs='mcs -pkg:dotnet -r:/home/scallywag/www/npoi-dotnet4/NPOI.dll '
 
 # Disable <C-s> scroll-lock / SFC on-off
 stty -ixon
+
+export NVM_DIR="/home/scallywag/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

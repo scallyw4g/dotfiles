@@ -9,6 +9,9 @@
 !.install-dotfiles.sh
 !InputMonoNarrow-Regular.ttf
 
+# MPD Config file
+!.mpdconf
+
 !.i3/config
 
 !.conkyrc

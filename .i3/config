@@ -64,10 +64,10 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -105,7 +105,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+bindsym $mod+x focus child
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -172,16 +172,19 @@ bar {
 	position top
 }
 
-   # Launch Chromium
+# Launch Firefox
 bindsym $mod+g exec firefox
+bindsym $mod+t exec "chromium --force-device-scale-factor=1.5"
 
-   # Next/Back/Shuffle/Toggle(Play/Pause)  Volume
+# Next/Back/Shuffle/Toggle(Play/Pause)  Volume
 bindsym $mod+n exec mpc next
 bindsym $mod+b exec mpc prev
 bindsym $mod+m exec mpc random
 bindsym $mod+p exec mpc toggle
 
 bindsym $mod+v exec pavucontrol
-
 bindsym $mod+plus exec mpc volume +5
 bindsym $mod+underscore exec mpc volume -5
+
+bindsym $mod+Down exec dec_backlight.sh
+bindsym $mod+Up exec inc_backlight.sh

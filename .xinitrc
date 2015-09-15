@@ -52,7 +52,7 @@ syndaemon -d -K -i 0.25
 # Start i3 with the live config generated above
 # exec i3 -c $HOME/.i3/liveconfig # start the i3 window manager
 
-# xrandr --output HDMI-0 --auto --left-of eDP-0
+xrandr --output HDMI-0 --auto --left-of eDP-0
 
 sxhkd &
 exec bspwm

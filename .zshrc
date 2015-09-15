@@ -142,7 +142,7 @@ stopJobsCount () {
 # Set the right-hand prompt
 RPS1='$(git_prompt_string)'
 
-PROMPT='%F{blue}  %(?/─── /── %F{red}!) %F{blue}%c %F{yellow}$STOPPEDJOBS%F{blue}'
+PROMPT='%F{blue}  %(?/─── /── %F{red}!) %F{yellow}$STOPPEDJOBS%F{blue}%c '
 
 # Increase history size
 HISTFILE=~/.histfile

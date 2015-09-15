@@ -127,6 +127,9 @@ nmap <silent> <Leader>eb :e ~/.config/bspwm/bspwmrc<CR>
 " Edit bspwmrc
 nmap <silent> <Leader>ex :e ~/.config/sxhkd/sxhkdrc<CR>
 
+" Edit lemonbar/panel
+nmap <silent> <Leader>ep :e ~/.config/lemonbar/panel<CR>
+
 " Edit current filetypes snippets file
 nmap <silent> <Leader>es :UltiSnipsEdit<CR>
 
@@ -138,6 +141,9 @@ nmap <silent> <Leader>s :w<CR>
 
 " Open Gblame
 nmap <Leader>gb :Gblame<CR>
+
+" Search buffer for word under cursor
+map <Leader>f <esc>"syiw/<C-r>s<CR>
 
 " Save a file with sudo
 cmap w!! w !sudo tee %

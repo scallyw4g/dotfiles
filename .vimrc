@@ -13,6 +13,7 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'crusoexia/vim-monokai'
+Plugin 'jaromero/vim-monokai-refined'
 
 Plugin 'omnisharp/omnisharp-vim'
 Plugin 'tpope/vim-dispatch'
@@ -52,7 +53,11 @@ highlight SpecialKey ctermfg=10 ctermbg=NONE cterm=NONE
 highlight LineNr ctermfg=12 ctermbg=NONE
 highlight CursorLineNr ctermfg=5 ctermbg=NONE
 highlight folded cterm=bold ctermbg=NONE ctermfg=10
+
+" For Monokai-Refined
 highlight SpellBad ctermbg=NONE
+highlight SpellRare ctermbg=NONE
+highlight SpellLocal ctermbg=NONE
 
 " Toggle background colors
 call togglebg#map("<F9>")
@@ -243,12 +248,14 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 "let g:Tex_ViewRule_pdf = 'fbpdf'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ------------------------------ LANGUAGES --------------------
+" ------------------------------ LANGUAGES
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set scss as css files for syntax highlighting
 autocmd BufNewFile,BufRead *.scss set ft=css
 " Set deface as html
 autocmd BufNewFile,BufRead *.deface set ft=html
+" Set sxhkdrc as shell
+autocmd BufNewFile,BufRead sxhkdrc set ft=sh
 
 " ----------------------------------- Ruby and Rails autocomplete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
@@ -289,7 +296,8 @@ set ttymouse=urxvt
 " Reloads vim when the .vimrc gets modified
 augroup myvimrc
 		au!
-		au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+		au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC |
+		if has('gui_running') | so $MYGVIMRC | endif
 augroup END
 
 	" Local Dirs

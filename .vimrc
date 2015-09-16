@@ -232,7 +232,7 @@ let g:UltiSnipsEditSplit = 'vertical'
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_root_markers = ['Gemfile']
-" let g:ctrlp_dotfiles = 0
+let g:ctrlp_dotfiles = 1
 " let g:ctrlp_switch_buffer = 0
 " let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
  let g:ctrlp_custom_ignore = {
@@ -325,23 +325,6 @@ au!
 
 autocmd bufwritepost .vimrc call UpdateVimRC()
 augroup END
-
-" Closes the scratch window after a completion
-" autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
-
-
-""function MkNonExDir(file, buf)
-""	if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
-""			let dir=fnamemodify(a:file, ':h')
-""			if !isdirectory(dir)
-""					call mkdir(dir, 'p')
-""			endif
-""	endif
-""endfunction
-""augroup BWCCreateDir
-""	autocmd!
-""	autocmd BufWritePre * :call MkNonExDir(expand('<afile>'), +expand('<abuf>'))
-""augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CSCOPE settings for vim

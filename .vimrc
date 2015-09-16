@@ -487,7 +487,7 @@ if has("cscope")
 		" Or, you can keep timeouts, by uncommenting the timeoutlen line below,
 		" with your own personal favorite value (in milliseconds):
 		"
-		set timeoutlen=1000
+		set timeoutlen=500
 		"
 		" Either way, since mapping timeout settings by default also set the
 		" timeouts for multicharacter 'keys codes' (like <F1>), you should also
@@ -505,5 +505,3 @@ if has("cscope")
 		"set ttimeoutlen=100
 
 endif
-
-

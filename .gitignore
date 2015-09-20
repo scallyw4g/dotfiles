@@ -7,7 +7,6 @@
 
 # Script for installing these files and a system font
 !.install-dotfiles.sh
-!InputMonoNarrow-Regular.ttf
 
 # MPD Config file
 !.mpdconf
@@ -25,10 +24,21 @@
 
 !.Xdefaults
 !.Xresources
+<<<<<<< HEAD
 
+=======
+>>>>>>> a2bceb5... Add solarized .Xresources includes.
 !.Xresources-solarized
 !.Xresources-solarized-light
 !.Xresources-solarized-dark
 
+<<<<<<< HEAD
+=======
+!.config/lemonbar/
+!.config/bspwm/*
+!.config/sxhkd/
+
+
+>>>>>>> a2bceb5... Add solarized .Xresources includes.
 !.xmodmap
 !.xinitrc

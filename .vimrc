@@ -128,6 +128,17 @@ let g:airline_powerline_fonts = 1
 " ----------------------------------- Custom Keymaps
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" esc insert mode
+imap jk <esc>
+
+" break <C-c>; it doesn't fire InsertLeave autocommands, which is bad apparently
+" http://valloric.github.io/YouCompleteMe/#faq
+map <C-c> <esc>iStopit<esc>
+
+"
+" EDIT RC FILES
+"
+
 " Edit .vimrc
 nmap <silent> <Leader>ev :e ~/.vimrc<CR>
 
@@ -137,7 +148,7 @@ nmap <silent> <Leader>ez :e ~/.zshrc<CR>
 " Edit bspwmrc
 nmap <silent> <Leader>eb :e ~/.config/bspwm/bspwmrc<CR>
 
-" Edit bspwmrc
+" Edit sxhkdrc
 nmap <silent> <Leader>ex :e ~/.config/sxhkd/sxhkdrc<CR>
 
 " Edit lemonbar/panel
@@ -146,7 +157,15 @@ nmap <silent> <Leader>ep :e ~/.config/lemonbar/panel<CR>
 " Edit current filetypes snippets file
 nmap <silent> <Leader>es :UltiSnipsEdit<CR>
 
-" Save all files
+"
+" UTILITY FUNCTIONS
+"
+
+" Move arguments with Sideways plugin
+nmap <Leader>h :SidewaysLeft<CR>
+nmap <Leader>l :SidewaysRight<CR>
+
+" Save all buffers
 nmap <silent> <Leader>S :wa<CR>
 
 " Save current buffer
@@ -166,13 +185,6 @@ nmap <Leader><Leader> <C-^>
 
 " set ,d to delete current file
 nmap <Leader>d :call delete(expand('%'))<CR>
-
-" esc insert mode
-imap jk <esc>
-
-" break <C-c>; it doesn't fire InsertLeave autocommands, which is bad apparently
-" http://valloric.github.io/YouCompleteMe/#faq
-map <C-c> <esc>iStopit<esc>
 
 " Maven clean/build
 " map <F4> :Mvn clean<CR>

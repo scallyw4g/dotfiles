@@ -28,8 +28,10 @@ Plugin 'vim-scripts/autoclose'
 Plugin 'AndrewRadev/sideways.vim'
 
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
+
 Plugin 'kien/ctrlp.vim'
 
 Plugin 'mileszs/ack.vim'

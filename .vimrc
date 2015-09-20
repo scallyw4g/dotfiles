@@ -25,6 +25,8 @@ Plugin 'sirver/ultisnips'
 
 Plugin 'vim-scripts/autoclose'
 
+Plugin 'AndrewRadev/sideways.vim'
+
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
@@ -86,6 +88,17 @@ set autoread
 set relativenumber
 " except for the line the cursor is on - show the actual line number
 set number
+
+" Set tabs to 2 spaces
+set tabstop=2
+set shiftwidth=2
+
+" This must be here because expandtab gets set later for .py files
+"Use tabs, not spaces
+set noexpandtab|retab!
+
+" Since I'm a wildman
+set wildmenu
 
 " show trailing whitespace, tabs and lines extending off the page
 set list
@@ -254,7 +267,7 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 "let g:Tex_ViewRule_pdf = 'fbpdf'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ------------------------------ LANGUAGES
+" ------------------------------ FILETYPE SPECIFIC FUNCTIONS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set scss as css files for syntax highlighting
 autocmd BufNewFile,BufRead *.scss set ft=css
@@ -262,6 +275,8 @@ autocmd BufNewFile,BufRead *.scss set ft=css
 autocmd BufNewFile,BufRead *.deface set ft=html
 " Set sxhkdrc as shell
 autocmd BufNewFile,BufRead sxhkdrc set ft=sh
+" Set python files to use expandtab
+autocmd BufNewFile,BufRead *.py set expandtab
 
 " ----------------------------------- Ruby and Rails autocomplete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
@@ -291,10 +306,6 @@ set scrolloff=7
 set pastetoggle=<F2>
 
 set clipboard=unnamed
-
-" Set tabs to 2 spaces
-set tabstop=2 shiftwidth=2 expandtab
-set noexpandtab|retab! "Use tabs, not spaces
 
 set mouse=a
 set ttymouse=urxvt

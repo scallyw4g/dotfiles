@@ -1,17 +1,3 @@
-FONTDIR=/usr/share/fonts/misc/Input_Fonts/InputMono/InputMonoNarrow/
-
-if [ ! -d $FONTDIR ]; then
-	echo "Installing Input font"
-	sudo mkdir -p $FONTDIR
-	sudo mv ./InputMonoNarrow-Regular.ttf $FONTDIR
-fi
-
-if [ ! -f $HOME/.Xfontsize ]; then
-	echo "Creating .Xfontsize"
-	touch $HOME/.Xfontsize
-	echo "#define FONTSIZE 16" >> $HOME/.Xfontsize
-fi
-
 # Setup Zsh
 sudo pacman --noconfirm -S zsh zsh-completions
 chsh $(which zsh)

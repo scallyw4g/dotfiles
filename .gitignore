@@ -25,5 +25,10 @@
 
 !.Xdefaults
 !.Xresources
+
+!.Xresources-solarized
+!.Xresources-solarized-light
+!.Xresources-solarized-dark
+
 !.xmodmap
 !.xinitrc

@@ -1,4 +1,6 @@
-#include "/home/scallywag/.Xresources-fontsize"
+! Set system-specific font
+#include "/home/scallywag/.Xresources-font"
+
 #include "/home/scallywag/.Xresources-solarized"
 
 ! For HiDPI displays
@@ -18,9 +20,5 @@ URxvt.depth: 32
 
 ! Scrollback buffer - 65535 is max
 URxvt*saveLines:12000
-
-! FONT set in .xinitrc
-*.font: xft:Hack-Regular:size=FONTSIZE
-URxvt.letterSpace: -3
 
 URxvt.intensityStyles: false

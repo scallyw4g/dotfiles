@@ -192,6 +192,9 @@ alias gpr='git pull-request -b tst_master'
 alias gr='git reset HEAD'
 alias grh='git reset --hard HEAD'
 
+# Alias cat to display tab characters mor better
+alias cat="cat pswds | sed 's/	/  /g'"
+
 # Alias for hub
 eval "$(hub alias -s)"
 

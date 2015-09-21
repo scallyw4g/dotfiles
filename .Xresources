@@ -1,7 +1,7 @@
 ! Set system-specific font
 #include "/home/scallywag/.Xresources-font"
 
-#include "/home/scallywag/.Xresources-solarized"
+#include "/home/scallywag/.Xresources-solarized-dark"
 
 ! For HiDPI displays
 *.dpi: 96

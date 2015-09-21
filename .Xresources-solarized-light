@@ -1,6 +1,8 @@
 ! Light
+
 ! Transparency
 URxvt.background:       [95]#fdf6e3
+
 #define S_base03        #fdf6e3
 #define S_base02        #eee8d5
 #define S_base01        #93a1a1
@@ -9,3 +11,5 @@ URxvt.background:       [95]#fdf6e3
 #define S_base1         #586e75
 #define S_base2         #073642
 #define S_base3         #002b36
+
+#include "/home/scallywag/.Xresources-solarized-common"

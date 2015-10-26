@@ -1,6 +1,4 @@
-" Apparently this must be first
-" This is set in case this file is ever loaded with the -u flag, otherwise it
-" is redundant as far as I can tell
+" Be Improved
 set nocompatible
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -11,32 +9,39 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
+" Fish filetype detection, among others
+Plugin 'dag/vim-fish'
+
+" Colors
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'crusoexia/vim-monokai'
 Plugin 'jaromero/vim-monokai-refined'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'digitaltoad/vim-jade'
+Plugin 'ap/vim-css-color'
+Plugin 'isRuslan/vim-es6'
 
-Plugin 'omnisharp/omnisharp-vim'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-rake'
-Plugin 'tpope/vim-bundler'
+" Utilities
 Plugin 'scrooloose/syntastic'
+Plugin 'omnisharp/omnisharp-vim'
 
+Plugin 'kien/ctrlp.vim'
+Plugin 'mileszs/ack.vim'
 Plugin 'sirver/ultisnips'
+Plugin 'bling/vim-airline'
 
-Plugin 'vim-scripts/autoclose'
+" Plugin 'vim-scripts/autoclose'
 
-Plugin 'AndrewRadev/sideways.vim'
-
+" This shit should be illegal. God bless Tim Pope
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 
-Plugin 'kien/ctrlp.vim'
+" Rails related
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-rake'
+Plugin 'tpope/vim-bundler'
 
-Plugin 'mileszs/ack.vim'
-
-Plugin 'bling/vim-airline'
 call vundle#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -46,22 +51,59 @@ call vundle#end()
 " indentation
 filetype plugin indent on
 
-" Solarized Colorscheme
 syntax enable
+
 set background=dark
-colorscheme solarized
+
+" colorscheme solarized
+
+" High contrast dark theme
+" colorscheme Tomorrow-Night-Blue
+
+" Lower contrast dark theme
+" colorscheme Tomorrow-Night-Eighties
+
+" Lowest contrast dark theme
+" colorscheme Tomorrow-Night
+
+" Pastel dark themes
+colorscheme babymate256
+" colorscheme bvemu
+
+" Muted dark themes
+" colorscheme badwolf
+" colorscheme blazer
+
+" Left off here
+" colorscheme charged-256
+
+
+
 highlight clear SignColumn
 
-highlight Normal ctermfg=12 ctermbg=NONE
-highlight SpecialKey ctermfg=10 ctermbg=NONE cterm=NONE
+" Clear background
+highlight Normal ctermbg=NONE
+highlight NonText ctermbg=NONE
+
+" Clear underline on Tabs
+highlight TabLine cterm=NONE ctermbg=NONE
+highlight TabLineSel term=standout
+highlight TabLineFill term=NONE cterm=NONE
+
+" Cursor line and matching bracket
+highlight MatchParen ctermfg=magenta ctermbg=NONE
+highlight CursorLineNr ctermfg=magenta ctermbg=NONE
+
 highlight LineNr ctermfg=12 ctermbg=NONE
-highlight CursorLineNr ctermfg=5 ctermbg=NONE
+highlight SpecialKey ctermfg=10 ctermbg=NONE cterm=NONE
 highlight folded cterm=bold ctermbg=NONE ctermfg=10
 
-" For Monokai-Refined
-highlight SpellBad ctermbg=NONE
+" Spelling background corrections are annoying
+highlight SpellBad ctermbg=NONE cterm=underline
 highlight SpellRare ctermbg=NONE
 highlight SpellLocal ctermbg=NONE
+highlight SpellCap ctermbg=NONE
+
 
 " Toggle background colors
 call togglebg#map("<F9>")
@@ -74,6 +116,9 @@ set hidden
 
 " Change leader to ,
 let mapleader=','
+
+" Do not cosider the $ character to be a word boundary
+set iskeyword+=$
 
 " Setting for eclim/YCM completion
 let g:EclimCompletionMethod = 'omnifunc'
@@ -95,21 +140,20 @@ set number
 set tabstop=2
 set shiftwidth=2
 
-" This must be here because expandtab gets set later for .py files
-"Use tabs, not spaces
-set noexpandtab|retab!
+" Use spaces instead of tabs
+set expandtab
+" Backspace over space-tabs
+set softtabstop=2
 
 " Since I'm a wildman
 set wildmenu
 
+" Don't redraw the screen in the middle of a macro
+set lazyredraw
+
 " show trailing whitespace, tabs and lines extending off the page
 set list
-set listchars=tab:\|\ ,trail:.,extends:#,nbsp:.
-
-" Strip trailing whitespace on every save
-function! StripWS()
-	:%s/\s\+$//e
-endfunction
+set listchars=tab:\│\ ,trail:.,extends:#,nbsp:.
 
 " No word wrapping at edge of window
 set nowrap
@@ -125,6 +169,9 @@ set laststatus=2
 
 " Powerline font
 let g:airline_powerline_fonts = 1
+
+" Enable the Tabline!
+let g:airline#extensions#tabline#enabled = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- Custom Keymaps
@@ -162,13 +209,8 @@ nmap <silent> <Leader>es :UltiSnipsEdit<CR>
 "
 " UTILITY FUNCTIONS
 "
-
-" Move arguments with Sideways plugin
-nmap <Leader>h :SidewaysLeft<CR>
-nmap <Leader>l :SidewaysRight<CR>
-
-" Save all buffers
-nmap <silent> <Leader>S :wa<CR>
+" Save all buffers and a vim Session in pwd
+nmap <silent> <Leader>S :wa<CR>:mksession!<CR>
 
 " Save current buffer
 nmap <silent> <Leader>s :w<CR>
@@ -207,10 +249,10 @@ set foldlevelstart=99
 set splitbelow
 set splitright
 
-nnoremap <C-h> <C-W><C-H>
-" nnoremap <C-j> <C-W><C-j>
-nnoremap <C-k> <C-W><C-k>
-nnoremap <C-l> <C-W><C-l>
+nnoremap <Leader><C-h> <C-W><C-H>
+nnoremap <Leader><C-j> <C-W><C-j>
+nnoremap <Leader><C-k> <C-W><C-k>
+nnoremap <Leader><C-l> <C-W><C-l>
 
 nnoremap <Leader>> <C-w>10>
 nnoremap <Leader>< <C-w>10<
@@ -218,8 +260,8 @@ nnoremap <Leader>< <C-w>10<
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Tabbing
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <Leader><C-l> :tabnext<CR>
-nnoremap <Leader><C-h> :tabprevious<CR>
+nnoremap <C-l> :tabnext<CR>
+nnoremap <C-h> :tabprevious<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- SEARCHING
@@ -259,11 +301,20 @@ let g:UltiSnipsEditSplit = 'vertical'
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_root_markers = ['Gemfile']
+
+" Do not limit the number of files to index
+let g:ctrlp_max_files = 0
+
+" Persist index cache across sessions
+let g:ctrlp_clear_cache_on_exit = 1
+
+" Index .files
 let g:ctrlp_dotfiles = 1
+
 " let g:ctrlp_switch_buffer = 0
 " let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
  let g:ctrlp_custom_ignore = {
-		\ 'dir':'\v[\/]\.git$|.*/db/migrate|.*/cache',
+		\ 'dir':'\v[\/]\.git$|.*/cache|node_modules',
 		\ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -285,12 +336,24 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set scss as css files for syntax highlighting
 autocmd BufNewFile,BufRead *.scss set ft=css
+
 " Set deface as html
 autocmd BufNewFile,BufRead *.deface set ft=html
+
 " Set sxhkdrc as shell
 autocmd BufNewFile,BufRead sxhkdrc set ft=sh
-" Set python files to use expandtab
-autocmd BufNewFile,BufRead *.py set expandtab
+
+" Vagrantfile
+autocmd BufNewFile,BufRead Vagrantfile set ft=ruby
+
+" Set Xresources
+autocmd BufNewFile,BufRead *Xresource* set ft=xdefaults
+"
+" Reloads vim when the .vimrc gets modified
+" autocmd BufWritePost .vimrc source ~/.vimrc
+
+" Compile my resume when I save it
+autocmd BufWritePost resume.* ! node render.js company Sample url Sample job Sample
 
 " ----------------------------------- Ruby and Rails autocomplete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
@@ -324,13 +387,6 @@ set clipboard=unnamed
 set mouse=a
 set ttymouse=urxvt
 
-" Reloads vim when the .vimrc gets modified
-augroup myvimrc
-		au!
-		au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC |
-		if has('gui_running') | so $MYGVIMRC | endif
-augroup END
-
 	" Local Dirs
 set undodir=~/.vim/undo
 
@@ -339,17 +395,11 @@ set undodir=~/.vim/undo
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Custom Functions
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! UpdateVimRC()
-		for server in split(serverlist())
-			call remote_send(server, '<Esc>:source $HOME/.vim/.vimrc<CR>')
-		endfor
- endfunction
 
-augroup myvimrchooks
-au!
-
-autocmd bufwritepost .vimrc call UpdateVimRC()
-augroup END
+" Strip trailing whitespace
+function! StripWS()
+	:%s/\s\+$//e
+endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CSCOPE settings for vim
@@ -495,7 +545,7 @@ if has("cscope")
 		" Or, you can keep timeouts, by uncommenting the timeoutlen line below,
 		" with your own personal favorite value (in milliseconds):
 		"
-		set timeoutlen=500
+		set timeoutlen=700
 		"
 		" Either way, since mapping timeout settings by default also set the
 		" timeouts for multicharacter 'keys codes' (like <F1>), you should also

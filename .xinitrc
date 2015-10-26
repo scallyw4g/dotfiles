@@ -5,8 +5,8 @@ nitrogen --restore &
 
 pulseaudio &
 
-export GDK_SCALE=2
-export QT_DEVICE_PIXEL_RATIO=2
+# export GDK_SCALE=2
+# export QT_DEVICE_PIXEL_RATIO=2
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
@@ -24,7 +24,7 @@ export PANEL_FIFO="/tmp/panel-fifo"
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources &
 
 # start compon
-compton -b --config $HOME/.config/compton.conf
+compton -Czfb -i 0.85 --config $HOME/.config/compton.conf
 
 # Start MPD
 mpd &
@@ -33,6 +33,8 @@ mpd &
 syndaemon -d -K -i 0.25
 
 xrandr --output HDMI-0 --auto --left-of eDP-0
+
+tint2 &
 
 sxhkd &
 exec bspwm

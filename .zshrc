@@ -1,6 +1,10 @@
+
 if [ -f $HOME/.env ]; then
 	. ~/.env
 fi
+
+# Override border width whenever a terminal is opened.
+bspc config -w focused border_width 2
 
 export IRIS_DATABASE_USER=iris
 
@@ -8,7 +12,7 @@ export IRIS_DATABASE_USER=iris
 export EDITOR=vim
 
 # Manage ssh-agents with keychain
-eval $(keychain --eval --agents ssh -Q --quiet $HOME/.ssh/jesse-yipida-rsa)
+eval $(keychain --eval --agents ssh -Q --quiet $HOME/.ssh/id_ecdsa)
 
 # some completion speeding
 __git_files () {
@@ -192,11 +196,10 @@ alias gpr='git pull-request -b tst_master'
 alias gr='git reset HEAD'
 alias grh='git reset --hard HEAD'
 
-# Alias cat to display tab characters mor better
-alias cat="cat pswds | sed 's/	/  /g'"
-
 # Alias for hub
 eval "$(hub alias -s)"
+
+alias art='php artisan'
 
 # Alias for MySql Workbench
 alias mysql-workbench='vncdesk 1'
@@ -223,6 +226,9 @@ export npm_config_prefix=~/.node_modules
 
 # apm
 export PATH=$PATH:~/etc/apm/bin/
+
+# Global composer packages
+export PATH=$PATH:~/.composer/vendor/bin
 
 export MONO_PATH=/home/scallywag/www/test-mono-app/NPOI-Binary/dotnet4
 export MCS_COLORS=errors=red

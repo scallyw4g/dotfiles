@@ -1,10 +1,11 @@
 ! Set system-specific font
 #include "/home/scallywag/.Xresources-font"
 
-#include "/home/scallywag/.Xresources-solarized-dark"
+! Colorscheme
+#include "/home/scallywag/.XresourcesColors/XresourcePurple"
 
 ! For HiDPI displays
-*.dpi: 96
+*.dpi: 192
 *.autohind: 0
 *.lcdfilter: lcddefault
 *.hintstyle: hintfull
@@ -14,6 +15,9 @@
 
 ! Turn off scroll bar
 URxvt.scrollBar: false
+
+! Padding inside the terminal
+URxvt.internalBorder: 15
 
 ! Color Depth
 URxvt.depth: 32

@@ -4,7 +4,7 @@ if [ -f $HOME/.env ]; then
 fi
 
 # Override border width whenever a terminal is opened.
-bspc config -w focused border_width 2
+bspc config -n focused border_width 2
 
 export IRIS_DATABASE_USER=iris
 

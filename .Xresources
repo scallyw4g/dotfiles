@@ -4,6 +4,25 @@
 ! Colorscheme
 #include "/home/scallywag/.XresourcesColors/XresourcePurple"
 
+! Enable tabs, url-matcher
+URxvt.perl-ext-common: default,matcher,tabbedex
+
+! Autohide the tab-bar if only one tab is open
+URxvt.tabbed.autohide: true
+
+! Disable direct input of unicode because it eats the Ctrl-Shift mapping
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+
+! Tabbing shortcuts
+URxvt.keysym.Control-Shift-T: perl:tabbedex:new_tab
+URxvt.keysym.Control-Shift-L: perl:tabbedex:next_tab
+URxvt.keysym.Control-Shift-H: perl:tabbedex:prev_tab
+
+! Open urls in Firefox
+URxvt.url-launcher: /usr/bin/firefox
+URxvt.matcher.button: 1
+
 ! For HiDPI displays
 *.dpi: 192
 *.autohind: 0

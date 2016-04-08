@@ -2,7 +2,7 @@
 URxvt.background:       [85]#311131
 
 #define t_background        #372b40
-#define t_current_line      #372b40
+#define t_current_line      #bdbdbd
 
 #define t_selection         #c4c8c5
 #define t_foreground        #c4c8c5

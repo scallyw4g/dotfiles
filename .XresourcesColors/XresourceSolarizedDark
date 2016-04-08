@@ -12,5 +12,5 @@ URxvt.background:       [85]#002b36
 #define S_base2         #eee8d5
 #define S_base3         #fdf6e3
 
-#include "/home/scallywag/.Xresources-solarized-common"
+#include "/home/scallywag/.XresourcesColors/XresourceSolarizedCommon"
 #include "/home/scallywag/.Xresources"

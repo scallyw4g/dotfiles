@@ -18,7 +18,10 @@ Plugin 'jaromero/vim-monokai-refined'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'ap/vim-css-color'
+
+" Javascript
 Plugin 'isRuslan/vim-es6'
+Plugin 'pangloss/vim-javascript'
 
 " Utilities
 Plugin 'scrooloose/syntastic'
@@ -103,6 +106,8 @@ highlight SpellBad ctermbg=NONE cterm=underline
 highlight SpellRare ctermbg=NONE
 highlight SpellLocal ctermbg=NONE
 highlight SpellCap ctermbg=NONE
+
+highlight Comment ctermfg=180 guifg=#868686
 
 
 " Toggle background colors
@@ -197,8 +202,11 @@ nmap <silent> <Leader>ez :e ~/.zshrc<CR>
 " Edit bspwmrc
 nmap <silent> <Leader>eb :e ~/.config/bspwm/bspwmrc<CR>
 
-" Edit sxhkdrc
-nmap <silent> <Leader>ex :e ~/.config/sxhkd/sxhkdrc<CR>
+" Edit sxhkdrc (hotkeys)
+nmap <silent> <Leader>eh :e ~/.config/sxhkd/sxhkdrc<CR>
+
+" Edit Xresources
+nmap <silent> <Leader>ex :e ~/.Xresources<CR>
 
 " Edit lemonbar/panel
 nmap <silent> <Leader>ep :e ~/.config/lemonbar/panel<CR>
@@ -218,8 +226,11 @@ nmap <silent> <Leader>s :w<CR>
 " Open Gblame
 nmap <Leader>gb :Gblame<CR>
 
-" Search buffer for word under cursor
-map <Leader>f <esc>"syiw/<C-r>s<CR>
+" Next buffer
+nmap <Leader>n :bn<CR>
+
+" Last buffer
+nmap <Leader>b :bprev<CR>
 
 " Save a file with sudo
 cmap w!! w !sudo tee %
@@ -240,7 +251,9 @@ map <F6> :Mvn clean package<CR>:Java<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set foldmethod=syntax
-set foldlevelstart=99
+set foldlevelstart=1
+
+let javaScript_fold=1         " JavaScript
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Splitting
@@ -270,7 +283,7 @@ nnoremap <C-h> :tabprevious<CR>
 " to the string
 set incsearch
 " Search Highlighting is annoying
-" set hlsearch
+set hlsearch
 
 " Ignores case sensitivity when searching for a string
 set ignorecase
@@ -314,7 +327,7 @@ let g:ctrlp_dotfiles = 1
 " let g:ctrlp_switch_buffer = 0
 " let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
  let g:ctrlp_custom_ignore = {
-		\ 'dir':'\v[\/]\.git$|.*/cache|node_modules',
+		\ 'dir':'\v[\/]\.git$|.*/cache|node_modules|.meteor',
 		\ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -348,12 +361,15 @@ autocmd BufNewFile,BufRead Vagrantfile set ft=ruby
 
 " Set Xresources
 autocmd BufNewFile,BufRead *Xresource* set ft=xdefaults
+
+" Typescript to Javascript
+autocmd BufNewFile,BufRead *ts set ft=javascript
 "
 " Reloads vim when the .vimrc gets modified
 " autocmd BufWritePost .vimrc source ~/.vimrc
 
 " Compile my resume when I save it
-autocmd BufWritePost resume.* ! node render.js company Sample url Sample job Sample
+autocmd BufWritePost resume.* ! node render.js --sample
 
 " ----------------------------------- Ruby and Rails autocomplete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1

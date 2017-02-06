@@ -1,6 +1,20 @@
 " Be Improved
 set nocompatible
 
+
+function! IsWin32()
+	if has("win32unix") || has("win32") " Cygwin || Regular Win32
+		return 1
+	else
+		return 0
+	endif
+endfunction
+
+function! IsUnix()
+	return !IsWin32()
+endfunction
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- Vundle settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -9,28 +23,25 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
-" Fish filetype detection, among others
-Plugin 'dag/vim-fish'
-
 " Colors
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'jaromero/vim-monokai-refined'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'digitaltoad/vim-jade'
-Plugin 'ap/vim-css-color'
 
 " Javascript
 Plugin 'isRuslan/vim-es6'
 Plugin 'pangloss/vim-javascript'
+Plugin 'leafgarland/typescript-vim'
+
+" CPP
+Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Utilities
-Plugin 'scrooloose/syntastic'
-Plugin 'omnisharp/omnisharp-vim'
+" On they fly keyword highlighting
+Plugin 't9md/vim-quickhl'
 
 Plugin 'kien/ctrlp.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'sirver/ultisnips'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
 
 " Plugin 'vim-scripts/autoclose'
 
@@ -39,11 +50,27 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-dispatch' " Does this work on WIN32 ?
 
-" Rails related
-Plugin 'tpope/vim-dispatch'
+" Rails
 Plugin 'tpope/vim-rake'
 Plugin 'tpope/vim-bundler'
+
+if IsUnix()
+	Plugin 'scrooloose/syntastic' " This doesn't work with MSVC.. standard.
+
+	Plugin 'omnisharp/omnisharp-vim' " Not currently using this on win32
+	
+	Plugin 'dag/vim-fish' " Fish filetype detection, among others
+
+	" Colors - WIN32 complains loudly about these
+	Plugin 'altercation/vim-colors-solarized'
+	Plugin 'jaromero/vim-monokai-refined'
+	Plugin 'digitaltoad/vim-jade'
+	Plugin 'ap/vim-css-color'
+
+endif
+
 
 call vundle#end()
 
@@ -55,6 +82,7 @@ call vundle#end()
 filetype plugin indent on
 
 syntax enable
+syntax on
 
 set background=dark
 
@@ -79,6 +107,16 @@ colorscheme babymate256
 
 " Left off here
 " colorscheme charged-256
+
+
+" Start GVim maximized
+au GUIEnter * simalt ~x
+
+" Remove the GUI tool bar and menubar
+if has("gui_running")
+    set guioptions-=T
+    set guioptions-=m
+endif
 
 
 
@@ -109,15 +147,162 @@ highlight SpellCap ctermbg=NONE
 
 highlight Comment ctermfg=180 guifg=#868686
 
+" When :set spell
+highlight SpellBad ctermbg=NONE term=bold,underline cterm=bold,underline
 
-" Toggle background colors
-call togglebg#map("<F9>")
+highlight Comment ctermfg=180
+
+highlight CursorLine ctermbg=8
+highlight ColorColumn ctermbg=8
+
+" Indent highlighting, among others
+highlight SpecialKey guifg=grey ctermfg=8 ctermbg=NONE cterm=NONE
+
+
+highlight link diffAdded DiffAdd
+highlight link diffRemoved DiffDelete
+
+highlight Normal ctermbg=NONE
+highlight NonText ctermbg=NONE
+highlight Folded ctermbg=NONE
+
+highlight cErrInBracket ctermbg=NONE
+
+" Make the cursor line readable in diff-mode
+autocmd filetype diff highlight clear CursorLine
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                                WIN32 CONFIG
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if IsWin32()
+	" Source a TIL function
+	" TODO: This should probably eventually do a recursive traversal of til/vim/*
+	" and source everything in that directory.
+	source ~/til/vim/sanitize-svn-diff.vim
+
+	" Set ft to diff for svn_diff.tmp
+	autocmd BufNewFile,BufRead .svn_diff.tmp set ft=diff
+	autocmd BufNewFile,BufRead .svn-commit.tmp set ft=diff
+
+	let $TMP="~/AppData/Local/Temp"
+	set shell=c:\\tools\\cygwin\\bin\\bash.exe
+
+	" Should this be on all platforms?
+	set guifont=Consolas:h11:cANSI
+
+	set grepprg=ack.cmd
+
+	set ttymouse=xterm2
+
+" Ignore trailing \r characters - Windows, I'm looking at you.
+" match Ignore /\r$/
+
+	nmap <Leader>p :!~/til/workflow/push_static_assets.sh<cr><cr>
+
+	" Get some reasonable syntax highlighting in .tpl files.
+	autocmd BufNewFile,BufRead *.tpl set ft=r
+
+	" Open current file in VS
+	nmap <silent> <leader>ed :call DevEnvEdit()<CR>
+
+	" Set random IBM i filetypes
+	" Shamelessly stolen from "http://www.dbg400.net/foswiki/bin/view/DBG400/EditingWithVim"
+	augroup filetypedetect
+		au! BufRead,BufNewFile *.rpg          setfiletype rpg
+		au! BufRead,BufNewFile *.rpgle        setfiletype rpgle
+		au! BufRead,BufNewFile *.clp          setfiletype clp
+		au! BufRead,BufNewFile *.dspf         setfiletype dds
+		au! BufRead,BufNewFile *.prtf         setfiletype dds
+		au! BufRead,BufNewFile *.pf           setfiletype dds
+		au! BufRead,BufNewFile *.lf           setfiletype dds
+		au! BufRead,BufNewFile *.sqlcpp       setfiletype cpp
+	augroup END
+
+	" TODO(JESSE) : THIS HAS A UNIX PLATFORM EQUIVALENT
+	map <leader>eb :e ~/.bash_profile<CR>
+
+	map <leader>ep :e ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1<CR>
+	map <leader>eh :e ~/.hotkeys.ahk<CR>
+	map <leader>ec :e /Cygwin.bat<CR>
+
+
+	" Counterpart to the GBlame() command from tpope
+	function! SBlame()
+		let current_cursor = getcurpos()
+		let cursor_line = current_cursor[1]
+
+		" Center the screen
+		call setpos('.', current_cursor)
+
+		call RunShellCommand('svn blame %')
+
+		let blame_cursor = getcurpos()
+		let blame_cursor[1] = cursor_line
+
+		" echo current_cursor
+		" echo blame_cursor
+
+		call setpos('.', blame_cursor)
+
+		windo set scrollbind
+	endfunction
+
+
+	function! DevEnvEdit()
+		!devenv.com /Edit %
+	endfunction
+
+	if !exists("*VSBuild")
+		function VSBuild()
+			make silent
+			copen
+		endfunction
+	endif
+
+
+	"
+	"  Visual studio settings
+	"
+
+	" Display errors in a vsplit, and don't open new buffers
+	set switchbuf=useopen
+
+	set makeprg=build.sh
+	" set errorformat+=\\\ %#%f(%l)\ :\ %#%t%[A-z]%#\ %m
+
+else
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                                  UNIX CONFIG
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+	" Use spaces instead of tabs
+	set expandtab
+	set ttymouse=urxvt
+
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                                 COMMON CONFIG
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+" Toggle background colors ..?
+" call togglebg#map("<F9>")
 
 " This hides buffers instead of closing them
 " No more saving before you ,,
 " no more lost history and marks when you ,,
 " MUST HAVE!
 set hidden
+set autowrite
 
 " Change leader to ,
 let mapleader=','
@@ -145,10 +330,11 @@ set number
 set tabstop=2
 set shiftwidth=2
 
-" Use spaces instead of tabs
-set expandtab
+
 " Backspace over space-tabs
 set softtabstop=2
+" Backspace over normal stuff
+set backspace=indent,eol,start
 
 " Since I'm a wildman
 set wildmenu
@@ -162,20 +348,39 @@ set listchars=tab:\│\ ,trail:.,extends:#,nbsp:.
 
 " No word wrapping at edge of window
 set nowrap
-"
+
+" Keep cursor in same column when jumping from file to file
+set nostartofline
+
+set colorcolumn=80
+set cursorline
+
+" Map 'K' to jump to help topics
+set keywordprg=:help
+
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+map N Nzz
+map n nzz
+
+set foldmethod=syntax
+set foldlevelstart=999
+
+set fdo-=search " only search in open folds
+
 " Set Vimperatorrc as vimfile
 autocmd BufNewFile,BufRead .vimperatorrc set ft=vim
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                     Syntastic
+"                                    Syntastic
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_cpp_compiler_options  = "-I./external/glfw-3.1.2/include/GLFW/ -I./external/glm-0.9.7.1/ -I./common/ -I./src/"
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- STATUSLINE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                   Status Line
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set noruler
-set laststatus=2
+set laststatus=2 " Always show the status line
 
 " Powerline font
 let g:airline_powerline_fonts = 1
@@ -183,8 +388,23 @@ let g:airline_powerline_fonts = 1
 " Enable the Tabline!
 let g:airline#extensions#tabline#enabled = 1
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                    Quickhl.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+highlight QuickhlCword ctermfg=81 cterm=underline
+
+nmap <Space>m <Plug>(quickhl-manual-this)
+xmap <Space>m <Plug>(quickhl-manual-this)
+nmap <Space>M <Plug>(quickhl-manual-reset)
+xmap <Space>M <Plug>(quickhl-manual-reset)
+
+nmap <Space>j <Plug>(quickhl-cword-toggle)
+nmap <Space>] <Plug>(quickhl-tag-toggle)
+map H <Plug>(operator-quickhl-manual-this-motion)
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- Custom Keymaps
+"                                     Custom Keymaps
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " esc insert mode
@@ -192,32 +412,51 @@ imap jk <esc>
 
 " break <C-c>; it doesn't fire InsertLeave autocommands, which is bad apparently
 " http://valloric.github.io/YouCompleteMe/#faq
-map <C-c> <esc>iStopit<esc>
+" 
+" Looks like I've broken the habit, now this is just annoying
+" map <C-c> <esc>iStopit<esc>
+
+" Open quickfix in vertical split
+map <C-q> :cw<CR><C-w>L
+
+" Compiler Error nav etc.
+nmap <C-n> :cn<CR>zO
+nmap <C-b> :cp<CR>zO
+
+
+
+" Quick-switch between source and header
+nmap <leader>h :call SwitchSourceHeader()<CR>
+
 
 "
-" EDIT RC FILES
+" Quick Edit Conf files
 "
 
-" Edit .vimrc
 nmap <silent> <Leader>ev :e ~/.vimrc<CR>
 
-" Edit .zshrc
 nmap <silent> <Leader>ez :e ~/.zshrc<CR>
 
-" Edit bspwmrc
 nmap <silent> <Leader>eb :e ~/.config/bspwm/bspwmrc<CR>
 
-" Edit sxhkdrc (hotkeys)
+" hotkeys
 nmap <silent> <Leader>eh :e ~/.config/sxhkd/sxhkdrc<CR>
 
-" Edit Xresources
 nmap <silent> <Leader>ex :e ~/.Xresources<CR>
 
-" Edit lemonbar/panel
+" lemonbar stuff
 nmap <silent> <Leader>ep :e ~/.config/lemonbar/panel<CR>
 
-" Edit current filetypes snippets file
+" snippets file
 nmap <silent> <Leader>es :UltiSnipsEdit<CR>
+
+" Today I learned ..
+map <leader>et :e ~/til/<CR>
+
+" Random .env stuff
+map <leader>ee :e ~/.env<CR>
+
+map <leader>eg :e ~/.gitconfig<CR>
 
 "
 " UTILITY FUNCTIONS
@@ -267,19 +506,21 @@ let javaScript_fold=1         " JavaScript
 set splitbelow
 set splitright
 
-nnoremap <Leader><C-h> <C-W><C-H>
-nnoremap <Leader><C-j> <C-W><C-j>
-nnoremap <Leader><C-k> <C-W><C-k>
-nnoremap <Leader><C-l> <C-W><C-l>
-
-nnoremap <Leader>> <C-w>10>
-nnoremap <Leader>< <C-w>10<
+nnoremap <C-w>h <C-w>h:call BufResize()<CR>
+nnoremap <C-w>l <C-w>l:call BufResize()<CR>
+nnoremap <C-w>j <C-w>j:call BufResize()<CR>
+nnoremap <C-w>k <C-w>k:call BufResize()<CR>
+nnoremap <C-w><C-h> <C-w>h:call BufResize()<CR>
+nnoremap <C-w><C-l> <C-w>l:call BufResize()<CR>
+nnoremap <C-w><C-j> <C-w>j:call BufResize()<CR>
+nnoremap <C-w><C-k> <C-w>k:call BufResize()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ------------------------------------ Tabbing
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <C-l> :tabnext<CR>
-nnoremap <C-h> :tabprevious<CR>
+
+nnoremap <C-l> :tabnext<CR>:call BufResize()<CR>
+nnoremap <C-h> :tabprevious<CR>:call BufResize()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- SEARCHING
@@ -316,15 +557,18 @@ let g:UltiSnipsEditSplit = 'vertical'
 " ----------------------------------- ctrl-P Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Ctrlp uses vims wildignore to ignore directories
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*
+
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_root_markers = ['Gemfile']
+let g:ctrlp_root_markers = ['Gemfile', 'node_modules', 'package.json']
 
 " Do not limit the number of files to index
 let g:ctrlp_max_files = 0
 
 " Persist index cache across sessions
-let g:ctrlp_clear_cache_on_exit = 1
+let g:ctrlp_clear_cache_on_exit=0
 
 " Index .files
 let g:ctrlp_dotfiles = 1
@@ -406,16 +650,66 @@ set pastetoggle=<F2>
 set clipboard=unnamed
 
 set mouse=a
-set ttymouse=urxvt
 
-	" Local Dirs
-set undodir=~/.vim/undo
+" Enable persistent undo
+set undofile
+set undodir=~/.undofiles
+
 
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Custom Functions
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
+function! RunShellCommand(cmdline)
+  echo a:cmdline
+  let expanded_cmdline = a:cmdline
+
+  for part in split(a:cmdline, ' ')
+     if part[0] =~ '\v[#<]'
+        let expanded_part = fnameescape(expand(part))
+        let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
+     endif
+
+		 " Always quote filepaths expanded with %
+     if part[0] =~ '%'
+        let expanded_part = '"' . fnameescape(expand(part)) . '"'
+        let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
+     endif
+  endfor
+
+  topleft vnew
+  setlocal buftype=nofile "bufhidden=wipe nobuflisted noswapfile nowrap
+	setlocal scrolloff=999
+  " call setline(1, 'You entered:    ' . a:cmdline)
+  " call setline(2, 'Expanded Form:  ' .expanded_cmdline)
+  " call setline(3,substitute(getline(2),'.','=','g'))
+  execute '$read ! '. expanded_cmdline
+  " setlocal nomodifiable
+  1
+endfunction
+
+function! FormatJSON()
+	execute '%!python -m json.tool' | w
+endfunction
+" Get highlight group for character under cursor.
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+function! SwitchSourceHeader()
+  "update!
+  if (expand ("%:e") == "cpp")
+    find %:t:r.h
+  else
+    find %:t:r.cpp
+  endif
+endfunction
+
+function! BufResize()
+	vertical res 120
+endfunction
 
 " Strip trailing whitespace
 function! StripWS()
@@ -423,7 +717,14 @@ function! StripWS()
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CSCOPE settings for vim
+"                                CSCOPE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Open CScope results in quickfix window for easy jumping.
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                              STOCK CSCOPE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " This file contains some boilerplate settings for vim's cscope interface,
@@ -470,7 +771,6 @@ if has("cscope")
 
 		" show msg when any other cscope db added
 		set cscopeverbose
-
 
 		""""""""""""" My cscope/vim key mappings
 		"
@@ -566,7 +866,7 @@ if has("cscope")
 		" Or, you can keep timeouts, by uncommenting the timeoutlen line below,
 		" with your own personal favorite value (in milliseconds):
 		"
-		set timeoutlen=700
+		set timeoutlen=300
 		"
 		" Either way, since mapping timeout settings by default also set the
 		" timeouts for multicharacter 'keys codes' (like <F1>), you should also

@@ -10,6 +10,10 @@ function! IsWin32()
 	endif
 endfunction
 
+function! IsUnix()
+	return !IsWin32()
+endfunction
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ----------------------------------- Vundle settings
@@ -19,15 +23,8 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
-" Fish filetype detection, among others
-Plugin 'dag/vim-fish'
-
 " Colors
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'jaromero/vim-monokai-refined'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'digitaltoad/vim-jade'
-Plugin 'ap/vim-css-color'
 
 " Javascript
 Plugin 'isRuslan/vim-es6'
@@ -38,15 +35,13 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Utilities
-Plugin 'omnisharp/omnisharp-vim'
 " On they fly keyword highlighting
 Plugin 't9md/vim-quickhl'
 
 Plugin 'kien/ctrlp.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'sirver/ultisnips'
-Plugin 'bling/vim-airline'
-" Plugin 'vim-airline/vim-airline'  From WIN32
+Plugin 'vim-airline/vim-airline'
 
 " Plugin 'vim-scripts/autoclose'
 
@@ -55,15 +50,25 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-dispatch' " Does this work on WIN32 ?
 
 " Rails
 Plugin 'tpope/vim-rake'
 Plugin 'tpope/vim-bundler'
 
-" Unfortunately this doesn't work with MSVC.. standard.
-if !IsWin32()
-	Plugin 'scrooloose/syntastic'
+if IsUnix()
+	Plugin 'scrooloose/syntastic' " This doesn't work with MSVC.. standard.
+
+	Plugin 'omnisharp/omnisharp-vim' " Not currently using this on win32
+	
+	Plugin 'dag/vim-fish' " Fish filetype detection, among others
+
+	" Colors - WIN32 complains loudly about these
+	Plugin 'altercation/vim-colors-solarized'
+	Plugin 'jaromero/vim-monokai-refined'
+	Plugin 'digitaltoad/vim-jade'
+	Plugin 'ap/vim-css-color'
+
 endif
 
 
@@ -552,7 +557,7 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*
 
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_root_markers = ['Gemfile']
+let g:ctrlp_root_markers = ['Gemfile', 'node_modules', 'package.json']
 
 " Do not limit the number of files to index
 let g:ctrlp_max_files = 0

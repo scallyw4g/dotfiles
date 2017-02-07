@@ -3,6 +3,8 @@ if [ -f $HOME/.env ]; then
 	. ~/.env
 fi
 
+alias tree='tree -I "node_modules|bower_components"'
+
 # Override border width whenever a terminal is opened.
 bspc config -n focused border_width 2
 
@@ -155,8 +157,7 @@ SAVEHIST=3000
 setopt appendhistory autocd
 unsetopt beep
 
-# vi mode
-bindkey -v
+export HISTCONTROL="ignoreboth:erasedumps"
 
 # kill lag when escaping to vi mode
 export KEYTIMEOUT=1

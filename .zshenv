@@ -14,7 +14,7 @@ alias gca='git commit -a'
 alias gc='git commit'
 
 alias gl='git log --pretty="%C(auto) %h %s"'
-alias gls='git log --pretty="%C(auto) %h %s" | head -n 20' # Think `git log short`
+alias gls='gl -n 20' # Think `git log short`
 alias glt='gl --after="yesterday"' # Think `git log today`
 
 alias gs='git status'
@@ -24,8 +24,6 @@ alias gdw='git diff -w'
 
 alias gdc='git diff --cached'
 alias gdcw='git diff --cached -w'
-
-alias gpr='git pull-request -b tst_master'
 
 alias gr='git reset HEAD'
 alias grh='git reset --hard HEAD'

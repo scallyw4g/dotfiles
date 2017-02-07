@@ -372,8 +372,13 @@ set fdo-=search " only search in open folds
 " Set Vimperatorrc as vimfile
 autocmd BufNewFile,BufRead .vimperatorrc set ft=vim
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                    Syntastic
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:syntastic_cpp_compiler_options  = "-I./external/glfw-3.1.2/include/GLFW/ -I./external/glm-0.9.7.1/ -I./common/ -I./src/"
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                     STATUSLINE
+"                                   Status Line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set noruler
 set laststatus=2 " Always show the status line

@@ -1,5 +1,4 @@
-" Be Improved
-set nocompatible
+set nocompatible " Be Improved
 
 
 function! IsWin32()
@@ -35,8 +34,7 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Utilities
-" On they fly keyword highlighting
-Plugin 't9md/vim-quickhl'
+Plugin 't9md/vim-quickhl'          " On they fly keyword highlighting
 
 Plugin 'godlygeek/tabular'
 Plugin 'kien/ctrlp.vim'
@@ -44,33 +42,31 @@ Plugin 'mileszs/ack.vim'
 Plugin 'sirver/ultisnips'
 Plugin 'vim-airline/vim-airline'
 
-" Plugin 'vim-scripts/autoclose'
-
 " This shit should be illegal. God bless Tim Pope
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-dispatch' " Does this work on WIN32 ?
+Plugin 'tpope/vim-dispatch'        " Don't think this works on WIN32 ..?
 
 " Rails
 Plugin 'tpope/vim-rake'
 Plugin 'tpope/vim-bundler'
 
+" Colors
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'jaromero/vim-monokai-refined'
+Plugin 'digitaltoad/vim-jade'
+Plugin 'ap/vim-css-color'
+
 if IsUnix()
-	Plugin 'scrooloose/syntastic' " This doesn't work with MSVC.. standard.
-
-	Plugin 'omnisharp/omnisharp-vim' " Not currently using this on win32
-	
-	Plugin 'dag/vim-fish' " Fish filetype detection, among others
-
-	" Colors - WIN32 complains loudly about these
-	Plugin 'altercation/vim-colors-solarized'
-	Plugin 'jaromero/vim-monokai-refined'
-	Plugin 'digitaltoad/vim-jade'
-	Plugin 'ap/vim-css-color'
+	Plugin 'scrooloose/syntastic'    " This doesn't work with MSVC.. standard.
+	Plugin 'omnisharp/omnisharp-vim' " Not currently using this on WIN32
+	Plugin 'dag/vim-fish'            " Fish filetype detection, among others
 
 endif
+
+" Plugin 'vim-scripts/autoclose'
 
 
 call vundle#end()

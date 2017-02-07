@@ -38,6 +38,7 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 " On they fly keyword highlighting
 Plugin 't9md/vim-quickhl'
 
+Plugin 'godlygeek/tabular'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'sirver/ultisnips'

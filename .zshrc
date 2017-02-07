@@ -1,12 +1,12 @@
-
-if [ -f $HOME/.env ]; then
-	. ~/.env
-fi
+[ -f $HOME/.env ] && . ~/.env
 
 alias tree='tree -I "node_modules|bower_components"'
 
 # Override border width whenever a terminal is opened.
-bspc config -n focused border_width 2
+# bspc config -n focused border_width 2
+
+# For some reason opening lemonbar is fucking this up
+bspc config top_padding 80
 
 export IRIS_DATABASE_USER=iris
 
@@ -19,15 +19,6 @@ eval $(keychain --eval --agents ssh -Q --quiet $HOME/.ssh/id_ecdsa)
 # some completion speeding
 __git_files () {
     _wanted files expl 'local files' _files
-}
-
-# Check for local tree.sh for custom command or fall back to default tree
-tree () {
-	if [ -x "./tree.sh" ] && [ $# -eq 0 ]; then
-		./tree.sh
-	else
-		command tree $*
-	fi
 }
 
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
@@ -55,6 +46,7 @@ zstyle ':completion:*' verbose yes
 zstyle ':completion:*' rehash yes
 zstyle -e ':completion:*:approximate:*' max-errors \
           'reply=( $(( ($#PREFIX + $#SUFFIX) / 3 )) )'
+
 
 # Completion for lowercase vbox commands
 compdef vboxmanage=VBoxManage

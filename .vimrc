@@ -16,7 +16,7 @@ endfunction
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- Vundle settings
+"                                     Vundle settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -76,7 +76,7 @@ endif
 call vundle#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"----------------------------------- Misc Custom Settings
+"                                    Misc Custom Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Allows file type detection for plugins with Vim and allows automatic
 " indentation
@@ -99,7 +99,6 @@ set background=dark
 " colorscheme Tomorrow-Night
 
 " Pastel dark themes
-colorscheme babymate256
 " colorscheme bvemu
 
 " Muted dark themes
@@ -109,6 +108,7 @@ colorscheme babymate256
 " Left off here
 " colorscheme charged-256
 
+colorscheme babymate256
 
 " Start GVim maximized
 au GUIEnter * simalt ~x
@@ -153,8 +153,8 @@ highlight SpellBad ctermbg=NONE term=bold,underline cterm=bold,underline
 
 highlight Comment ctermfg=180
 
-highlight CursorLine ctermbg=8
-highlight ColorColumn ctermbg=8
+" highlight CursorLine ctermbg=8
+" highlight ColorColumn ctermbg=8
 
 " Indent highlighting, among others
 highlight SpecialKey guifg=grey ctermfg=8 ctermbg=NONE cterm=NONE
@@ -206,9 +206,6 @@ if IsWin32()
 	" Get some reasonable syntax highlighting in .tpl files.
 	autocmd BufNewFile,BufRead *.tpl set ft=r
 
-	" Open current file in VS
-	nmap <silent> <leader>ed :call DevEnvEdit()<CR>
-
 	" Set random IBM i filetypes
 	" Shamelessly stolen from "http://www.dbg400.net/foswiki/bin/view/DBG400/EditingWithVim"
 	augroup filetypedetect
@@ -222,12 +219,13 @@ if IsWin32()
 		au! BufRead,BufNewFile *.sqlcpp       setfiletype cpp
 	augroup END
 
-	" TODO(JESSE) : THIS HAS A UNIX PLATFORM EQUIVALENT
-	map <leader>eb :e ~/.bash_profile<CR>
+	" Open current file in VS
+	nmap <silent> <leader>ed :call DevEnvEdit()<CR>
 
-	map <leader>ep :e ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1<CR>
-	map <leader>eh :e ~/.hotkeys.ahk<CR>
-	map <leader>ec :e /Cygwin.bat<CR>
+	map <leader>eb :tabe ~/.bash_profile<CR>
+	map <leader>ep :tabe ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1<CR>
+	map <leader>eh :tabe ~/.hotkeys.ahk<CR>
+	map <leader>ec :tabe /Cygwin.bat<CR>
 
 
 	" Counterpart to the GBlame() command from tpope
@@ -285,6 +283,8 @@ else
 	" Use spaces instead of tabs
 	set expandtab
 	set ttymouse=urxvt
+
+	set makeprg=./make.sh
 
 endif
 
@@ -405,7 +405,7 @@ map H <Plug>(operator-quickhl-manual-this-motion)
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                     Custom Keymaps
+"                                     Keymaps
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " esc insert mode
@@ -424,44 +424,43 @@ map <C-q> :cw<CR><C-w>L
 nmap <C-n> :cn<CR>zO
 nmap <C-b> :cp<CR>zO
 
-
-
 " Quick-switch between source and header
 nmap <leader>h :call SwitchSourceHeader()<CR>
 
 
-"
-" Quick Edit Conf files
-"
+""""""""""""""""""""""""""""""""""""""""
+"      Quick Edit Conf files
+""""""""""""""""""""""""""""""""""""""""
 
-nmap <silent> <Leader>ev :e ~/.vimrc<CR>
+nmap <silent> <Leader>ev :tabe ~/.vimrc<CR>
 
-nmap <silent> <Leader>ez :e ~/.zshrc<CR>
-
-nmap <silent> <Leader>eb :e ~/.config/bspwm/bspwmrc<CR>
+nmap <silent> <Leader>ez :tabe ~/.zshrc<CR>
 
 " hotkeys
-nmap <silent> <Leader>eh :e ~/.config/sxhkd/sxhkdrc<CR>
+nmap <silent> <Leader>eh :tabe ~/.config/sxhkd/sxhkdrc<CR>
 
-nmap <silent> <Leader>ex :e ~/.Xresources<CR>
+nmap <silent> <Leader>ex :tabe ~/.Xresources<CR>
 
 " lemonbar stuff
-nmap <silent> <Leader>ep :e ~/.config/lemonbar/panel<CR>
+nmap <silent> <Leader>ep :tabe ~/.config/lemonbar/panel<CR>
+
+nmap <silent> <Leader>ew :tabe ~/.config/bspwm/bspwmrc<CR>
+
+" Today I learned
+map <leader>et           :tabe ~/til/<CR>
+
+" Random .env stuff
+map <leader>ee           :tabe ~/.env<CR>
+
+map <leader>eg           :tabe ~/.gitconfig<CR>
 
 " snippets file
 nmap <silent> <Leader>es :UltiSnipsEdit<CR>
 
-" Today I learned ..
-map <leader>et :e ~/til/<CR>
+""""""""""""""""""""""""""""""""""""""""
+"              Utility
+""""""""""""""""""""""""""""""""""""""""
 
-" Random .env stuff
-map <leader>ee :e ~/.env<CR>
-
-map <leader>eg :e ~/.gitconfig<CR>
-
-"
-" UTILITY FUNCTIONS
-"
 " Save all buffers and a vim Session in pwd
 nmap <silent> <Leader>S :wa<CR>:mksession!<CR>
 
@@ -492,7 +491,7 @@ map <F5> :Mvn clean package<CR>
 map <F6> :Mvn clean package<CR>:Java<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ------------------------------------ Folding
+"                                      Folding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set foldmethod=syntax
@@ -501,7 +500,7 @@ set foldlevelstart=1
 let javaScript_fold=1         " JavaScript
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ------------------------------------ Splitting
+"                                      Splitting
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set splitbelow
@@ -517,14 +516,14 @@ nnoremap <C-w><C-j> <C-w>j:call BufResize()<CR>
 nnoremap <C-w><C-k> <C-w>k:call BufResize()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ------------------------------------ Tabbing
+"                                     Tabbing
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 nnoremap <C-l> :tabnext<CR>:call BufResize()<CR>
 nnoremap <C-h> :tabprevious<CR>:call BufResize()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- SEARCHING
+"                                     Search
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Incsearch searches the document for a string each time a character is added
 " to the string
@@ -539,7 +538,7 @@ set ignorecase
 set smartcase
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- Ultisnips Settings
+"                                Ultisnips Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " My vim hasn't been compiled with python3 support;
@@ -555,7 +554,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-F>"
 let g:UltiSnipsEditSplit = 'vertical'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- ctrl-P Settings
+"                                 Ctrl-P Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Ctrlp uses vims wildignore to ignore directories
@@ -581,7 +580,7 @@ let g:ctrlp_dotfiles = 1
 		\ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- LaTeX
+"                                     LaTeX
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Force grep to display filenames even when searching through a single file
 " This has something to do with autocomplete in latex
@@ -595,7 +594,7 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 "let g:Tex_ViewRule_pdf = 'fbpdf'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ------------------------------ FILETYPE SPECIFIC FUNCTIONS
+"                              Filetype Specific
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set scss as css files for syntax highlighting
 autocmd BufNewFile,BufRead *.scss set ft=css
@@ -614,20 +613,23 @@ autocmd BufNewFile,BufRead *Xresource* set ft=xdefaults
 
 " Typescript to Javascript
 autocmd BufNewFile,BufRead *ts set ft=javascript
-"
+
 " Reloads vim when the .vimrc gets modified
-" autocmd BufWritePost .vimrc source ~/.vimrc
+" autocmd BufWritePost ~/.vimrc so %
+
+" Reload BSPWM when we write to config file
+" autocmd BufWritePost bspwmrc call RunShellCommand('~/.config/bspwm/bspwmrc')
 
 " Compile my resume when I save it
 autocmd BufWritePost resume.* ! node render.js --sample
 
-" ----------------------------------- Ruby and Rails autocomplete
+" Ruby and Rails autocomplete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ----------------------------------- Ctags
+"                                     Ctags
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Searches for tags file in current folder and works its way up to
 " root looking for one.

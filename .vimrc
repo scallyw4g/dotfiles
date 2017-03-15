@@ -24,6 +24,7 @@ Plugin 'gmarik/Vundle.vim'
 
 " Colors
 Plugin 'flazz/vim-colorschemes'
+Plugin 'tikhomirov/vim-glsl'
 
 " Javascript
 Plugin 'isRuslan/vim-es6'
@@ -282,6 +283,8 @@ else
 
 	set makeprg=./make.sh
 
+	set grepprg=ack
+
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -371,7 +374,7 @@ autocmd BufNewFile,BufRead .vimperatorrc set ft=vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                    Syntastic
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_cpp_compiler_options  = "-I./external/glfw-3.1.2/include/GLFW/ -I./external/glm-0.9.7.1/ -I./common/ -I./src/"
+let g:syntastic_cpp_compiler_options  = "-I./external/glm-0.9.7.1/ -I./src/ -I./src/GLFW"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   Status Line
@@ -554,7 +557,7 @@ let g:UltiSnipsEditSplit = 'vertical'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Ctrlp uses vims wildignore to ignore directories
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/.stack-work/*
 
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
@@ -572,7 +575,7 @@ let g:ctrlp_dotfiles = 1
 " let g:ctrlp_switch_buffer = 0
 " let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
  let g:ctrlp_custom_ignore = {
-		\ 'dir':'\v[\/]\.git$|.*/cache|node_modules|.meteor',
+		\ 'dir':'\v[\/]\.git$|.*/cache|node_modules|.meteor|vendor|ngrok|composer.lock',
 		\ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -580,7 +583,6 @@ let g:ctrlp_dotfiles = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Force grep to display filenames even when searching through a single file
 " This has something to do with autocomplete in latex
-set grepprg=grep\ -nH\ $*
 
 " So empty .tex files still load vim-latex
 let g:tex_flavor='latex'
@@ -609,6 +611,9 @@ autocmd BufNewFile,BufRead *Xresource* set ft=xdefaults
 
 " Typescript to Javascript
 autocmd BufNewFile,BufRead *ts set ft=javascript
+
+" GLSL
+autocmd BufNewFile,BufRead *shader set ft=glsl
 
 " Reloads vim when the .vimrc gets modified
 " autocmd BufWritePost ~/.vimrc so %

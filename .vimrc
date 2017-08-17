@@ -360,8 +360,11 @@ set keywordprg=:help
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
-map N Nzz
-map n nzz
+" map N Nzz
+" map n nzz
+
+" Quicker toggle entire fold
+map zz zA
 
 set foldmethod=syntax
 set foldlevelstart=999
@@ -374,7 +377,7 @@ autocmd BufNewFile,BufRead .vimperatorrc set ft=vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                    Syntastic
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_cpp_compiler_options  = "-I./external/glm-0.9.7.1/ -I./src/ -I./src/GLFW"
+let g:syntastic_cpp_compiler_options  = "-I./external/glm-0.9.7.1/ -I./src/ -I./src/GL"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   Status Line
@@ -416,9 +419,6 @@ imap jk <esc>
 " Looks like I've broken the habit, now this is just annoying
 " map <C-c> <esc>iStopit<esc>
 
-" Open quickfix in vertical split
-map <C-q> :cw<CR><C-w>L
-
 " Compiler Error nav etc.
 nmap <C-n> :cn<CR>zO
 nmap <C-b> :cp<CR>zO
@@ -431,58 +431,72 @@ nmap <leader>h :call SwitchSourceHeader()<CR>
 "      Quick Edit Conf files
 """"""""""""""""""""""""""""""""""""""""
 
-nmap <silent> <Leader>ev :tabe ~/.vimrc<CR>
+nnoremap <silent> <Leader>ev :tabe ~/.vimrc<CR>
 
-nmap <silent> <Leader>ez :tabe ~/.zshrc<CR>
+nnoremap <silent> <Leader>ez :tabe ~/.zshrc<CR>
 
 " hotkeys
-nmap <silent> <Leader>eh :tabe ~/.config/sxhkd/sxhkdrc<CR>
+nnoremap <silent> <Leader>eh :tabe ~/.config/sxhkd/sxhkdrc<CR>
 
-nmap <silent> <Leader>ex :tabe ~/.Xresources<CR>
+nnoremap <silent> <Leader>ex :tabe ~/.Xresources<CR>
 
 " lemonbar stuff
-nmap <silent> <Leader>ep :tabe ~/.config/lemonbar/panel<CR>
+nnoremap <silent> <Leader>ep :tabe ~/.config/lemonbar/panel<CR>
 
-nmap <silent> <Leader>ew :tabe ~/.config/bspwm/bspwmrc<CR>
+nnoremap <silent> <Leader>ew :tabe ~/.config/bspwm/bspwmrc<CR>
 
 " Today I learned
-map <leader>et           :tabe ~/til/<CR>
+nnoremap <leader>et           :tabe ~/til/<CR>
 
 " Random .env stuff
-map <leader>ee           :tabe ~/.env<CR>
+nnoremap <leader>ee           :tabe ~/.env<CR>
 
-map <leader>eg           :tabe ~/.gitconfig<CR>
+nnoremap <leader>eg           :tabe ~/.gitconfig<CR>
 
 " snippets file
-nmap <silent> <Leader>es :UltiSnipsEdit<CR>
+nnoremap <silent> <Leader>es :UltiSnipsEdit<CR>
 
 """"""""""""""""""""""""""""""""""""""""
 "              Utility
 """"""""""""""""""""""""""""""""""""""""
 
 " Save all buffers and a vim Session in pwd
-nmap <silent> <Leader>S :wa<CR>:mksession!<CR>
+nnoremap <silent> <Leader>S :wa<CR>:mksession!<CR>
 
 " Save current buffer
-nmap <silent> <Leader>s :w<CR>
+nnoremap <silent> <Leader>s :w<CR>
 
 " Open Gblame
-nmap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gb :Gblame<CR>
 
 " Next buffer
-nmap <Leader>n :bn<CR>
+nnoremap <Leader>n :bn<CR>
 
 " Last buffer
-nmap <Leader>b :bprev<CR>
+nnoremap <Leader>b :bprev<CR>
 
 " Save a file with sudo
-cmap w!! w !sudo tee %
+cnoremap w!! w !sudo tee %
 
 " buffer toggle
-nmap <Leader><Leader> <C-^>
+nnoremap <Leader><Leader> <C-^>
 
 " set ,d to delete current file
-nmap <Leader>d :call delete(expand('%'))<CR>
+nnoremap <Leader>d :call delete(expand('%'))<CR>
+
+nnoremap <Leader>q :call ToggleQuickfix()<CR>
+
+function! ToggleQuickfix()
+  if exists("g:qfix_win")
+    cclose
+    unlet g:qfix_win
+  else
+    copen
+    wincmd J
+    let g:qfix_win = bufnr("$")
+  endif
+endfunction
+
 
 " Maven clean/build
 " map <F4> :Mvn clean<CR>

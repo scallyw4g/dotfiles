@@ -1,6 +1,6 @@
 #! /bin/sh
 
-#  \uf1db 
+#  TODO(Jesse): Incorporate \uf1db - Rebellion symbol
 
 . panel_colors
 
@@ -10,73 +10,90 @@ echo " Initializing .."
 
 while read -r line ; do
   case $line in
+
     S*)
       # System Info
       sys_info="%{F$COLOR_STATUS_FG}%{B$COLOR_STATUS_BG} ${line#?} %{B-}%{F-}"
-      ;;
-
+    ;;
     T*)
-      # xtitle output
-      # title="%{F$COLOR_TITLE_FG}%{B$COLOR_TITLE_BG} ${line#?} %{B-}%{F-}"
-      ;;
+    #   # xtitle output
+    #   # title="%{F$COLOR_TITLE_FG}%{B$COLOR_TITLE_BG} ${line#?} %{B-}%{F-}"
+    ;;
+    W*) # BSPWM Message
 
-    W*) # bspwm internal state
+      wm_info=""
+      MonitorsEnumerated=0
 
-      wm_info=" "
-
-      IFS=':' # What this is used for I cannot tell
+      IFS=':' # Change read/param expansion to split on colons
 
       # Strip the W
       set -- ${line#?}
 
+
       while [ $# -gt 0 ] ; do
         item=$1
-        name=${item#?}
+        name=" ${item#?} " # Add spaces for visual padding and strip first char
+        delim=" "
+
+        Underline=$NULL
+        Foreground=$OPAQ$GREY
+        Background=$TRANSP$BACKGROUND
+
         case $item in
-          M*)
-            # active monitor
-            if [ $num_mon -gt 1 ] ; then
-              wm_info="$wm_info %{F$COLOR_ACTIVE_MONITOR_FG}%{B$COLOR_ACTIVE_MONITOR_BG} %{A:bspc desktop -f ${name}:}${name} %{B-}%{F-}  "
+
+          M*) # Active monitor
+            [ $MonitorsEnumerated -gt 0 ] && wm_info="${wm_info}   "
+            MonitorsEnumerated=$(expr $MonitorsEnumerated + 1)
+            MonitorFocused=1
+          ;;
+
+          m*) # Inactive Monitor
+            [ $MonitorsEnumerated -gt 0 ] && wm_info="${wm_info}   "
+            MonitorsEnumerated=$(expr $MonitorsEnumerated + 1)
+            MonitorFocused=0
+          ;;
+
+          [F,U]*) # Focused Free, Focused Urgent
+            if [ $MonitorFocused -eq 1 ]; then
+              Underline=$PINK_UNDERLINE
+              Foreground=$OPAQ$BLUE
             fi
-            ;;
-          m*)
-            # inactive monitor
-            if [ $num_mon -gt 1 ] ; then
-              wm_info="$wm_info %{F$COLOR_INACTIVE_MONITOR_FG}%{B$COLOR_INACTIVE_MONITOR_BG} %{A:bspc desktop -f ${name}:}${name} %{B-}%{F-}  "
+          ;;
+
+          O*) # Focused Occupied
+            Foreground=$OPAQ$BLUE
+            if [ $MonitorFocused -eq 1 ]; then
+              Underline=$PINK_UNDERLINE
             fi
-            ;;
-          O*)
-            # focused occupied desktop
-            wm_info="${wm_info}%{F$COLOR_FOCUSED_OCCUPIED_FG}%{B$COLOR_FOCUSED_OCCUPIED_BG}%{U$COLOR_UNDERLINE}%{+u} %{A:bspc desktop -f ${name}:}${name} %{-u}%{B-}%{F-}"
-            ;;
-          F*)
-            # focused free desktop
-            wm_info="${wm_info}%{F$COLOR_FOCUSED_FREE_FG}%{B$COLOR_FOCUSED_FREE_BG}%{U$COLOR_UNDERLINE}%{+u} %{A:bspc desktop -f ${name}:}${name} %{-u}%{B-}%{F-}"
-            ;;
-          U*)
-            # focused urgent desktop
-            wm_info="${wm_info}%{F$COLOR_FOCUSED_URGENT_FG}%{B$COLOR_FOCUSED_URGENT_BG}%{U$COLOR_UNDERLINE}%{+u} %{A:bspc desktop -f ${name}:}${name} %{-u}%{B-}%{F-}"
-            ;;
-          o*)
-            # occupied desktop
-            wm_info="${wm_info}%{F$COLOR_OCCUPIED_FG}%{B$COLOR_OCCUPIED_BG} %{A:bspc desktop -f ${name}:}${name} %{B-}%{F-}"
-            ;;
-          f*)
-            # free desktop
-            wm_info="${wm_info}%{F$COLOR_FREE_FG}%{B$COLOR_FREE_BG} %{A:bspc desktop -f ${name}:}${name} %{B-}%{F-}"
-            ;;
-          u*)
-            # urgent desktop
-            wm_info="${wm_info}%{F$COLOR_URGENT_FG}%{B$COLOR_URGENT_BG} %{A:bspc desktop -f ${name}:}${name} %{B-}%{F-}"
-            ;;
-          L*)
-            # layout
-            wm_info="$wm_info  %{F$COLOR_LAYOUT_FG}%{B$COLOR_LAYOUT_BG} %{A:bspc desktop -f ${name}:}${name} %{B-}%{F-}"
-            ;;
+          ;;
+
+          o*) # Unfocused Occupied
+            Foreground=$OPAQ$BLUE
+          ;;
+
+          f*) # Unfocused Free
+          ;;
+
+          u*) # Unfocused Urgent
+          ;;
+
+          *) # Eat unwanted messages
+            name=""
+            delim=""
+            Underline=$NULL
+            Background=$TRANSP$BACKGROUND
+            Foreground=$NULL
+          ;;
+
         esac
+
+        wm_info="${wm_info}%{F$Foreground}%{B$Background}%{U$Underline}%{+u}${name}%{-u}%{B-}%{F-}${delim}"
+
         shift
       done
-      ;;
+    ;;
   esac
-  echo "%s\n" "%{l}${wm_info}%{c}%{r}${sys_info}"
+
+  echo "%{l}${wm_info}%{c}%{r}${sys_info}"
+
 done

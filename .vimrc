@@ -437,14 +437,14 @@ nnoremap <silent> <Leader>ev :tabe ~/.vimrc<CR>
 nnoremap <silent> <Leader>ez :tabe ~/.zshrc<CR>
 
 " hotkeys
-nnoremap <silent> <Leader>eh :tabe ~/.config/sxhkd/sxhkdrc<CR>
+nnoremap <silent> <Leader>eh :tabe ~/.sxhkdrc<CR>
 
 nnoremap <silent> <Leader>ex :tabe ~/.Xresources<CR>
 
 " lemonbar stuff
-nnoremap <silent> <Leader>ep :tabe ~/.config/lemonbar/panel<CR>
+nnoremap <silent> <Leader>ep :tabe ~/.lemonbar/panel<CR>
 
-nnoremap <silent> <Leader>ew :tabe ~/.config/bspwm/bspwmrc<CR>
+nnoremap <silent> <Leader>ew :tabe ~/.bspwmrc<CR>
 
 " Today I learned
 nnoremap <leader>et           :tabe ~/til/<CR>

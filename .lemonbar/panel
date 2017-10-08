@@ -7,7 +7,7 @@ DOUBLE_PANEL_GAP=$(expr $PANEL_GAP + $PANEL_GAP)
 PANEL_HEIGHT=50
 
 FONTS="-f $PANEL_FONT_MAIN -f $PANEL_FONT_ICON"
-LEMONBAR_UNDERLINE="-u 3"
+LEMONBAR_UNDERLINE="-u 2"
 
 . panel_colors
 
@@ -35,9 +35,7 @@ for MonitorID in $Monitors; do
 
     bspc subscribe > "$PANEL_FIFO$MonitorID" &
 
-    ~/.config/lemonbar/sys_info.sh $barInfo > "$PANEL_FIFO$MonitorID" &
-
-    ~/.config/lemonbar/sys_info.sh $barInfo > "$PANEL_FIFO$MonitorID" &
+    ~/.lemonbar/sys_info.sh $barInfo > "$PANEL_FIFO$MonitorID" &
 
     # # info.sh outputs system information.
     # if [ -z "$(eval echo \$'barInfo'$MonitorID)" ]; then

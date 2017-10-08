@@ -14,7 +14,7 @@ export MPD_HOST=127.0.0.1
 export MPD_PORT=6600
 
 # Include for lemonbar
-export PATH=$PATH:$HOME/.config/lemonbar
+export PATH=$PATH:$HOME/.lemonbar
 export PANEL_FIFO="/tmp/panel-fifo"
 
 # Swap Ctrl and Caps Lock

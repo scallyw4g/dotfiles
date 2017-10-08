@@ -2,15 +2,15 @@ set nocompatible " Be Improved
 
 
 function! IsWin32()
-	if has("win32unix") || has("win32") " Cygwin || Regular Win32
-		return 1
-	else
-		return 0
-	endif
+  if has("win32unix") || has("win32") " Cygwin || Regular Win32
+    return 1
+  else
+    return 0
+  endif
 endfunction
 
 function! IsUnix()
-	return !IsWin32()
+  return !IsWin32()
 endfunction
 
 
@@ -61,9 +61,9 @@ Plugin 'digitaltoad/vim-jade'
 Plugin 'ap/vim-css-color'
 
 if IsUnix()
-	Plugin 'scrooloose/syntastic'    " This doesn't work with MSVC.. standard.
-	Plugin 'omnisharp/omnisharp-vim' " Not currently using this on WIN32
-	Plugin 'dag/vim-fish'            " Fish filetype detection, among others
+  Plugin 'scrooloose/syntastic'    " This doesn't work with MSVC.. standard.
+  Plugin 'omnisharp/omnisharp-vim' " Not currently using this on WIN32
+  Plugin 'dag/vim-fish'            " Fish filetype detection, among others
 
 endif
 
@@ -84,7 +84,7 @@ syntax on
 
 set background=dark
 
-" colorscheme solarized
+colorscheme solarized
 
 " High contrast dark theme
 " colorscheme Tomorrow-Night-Blue
@@ -105,7 +105,7 @@ set background=dark
 " Left off here
 " colorscheme charged-256
 
-colorscheme babymate256
+" colorscheme babymate256
 
 " Start GVim maximized
 au GUIEnter * simalt ~x
@@ -150,8 +150,8 @@ highlight SpellBad ctermbg=NONE term=bold,underline cterm=bold,underline
 
 highlight Comment ctermfg=180
 
-" highlight CursorLine ctermbg=8
-" highlight ColorColumn ctermbg=8
+highlight CursorLine ctermbg=NONE
+highlight ColorColumn ctermbg=238
 
 " Indent highlighting, among others
 highlight SpecialKey guifg=grey ctermfg=8 ctermbg=NONE cterm=NONE
@@ -176,98 +176,97 @@ autocmd filetype diff highlight clear CursorLine
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if IsWin32()
-	" Source a TIL function
-	" TODO: This should probably eventually do a recursive traversal of til/vim/*
-	" and source everything in that directory.
-	source ~/til/vim/sanitize-svn-diff.vim
+  " Source a TIL function
+  " TODO: This should probably eventually do a recursive traversal of til/vim/*
+  " and source everything in that directory.
+  source ~/til/vim/sanitize-svn-diff.vim
 
-	" Set ft to diff for svn_diff.tmp
-	autocmd BufNewFile,BufRead .svn_diff.tmp set ft=diff
-	autocmd BufNewFile,BufRead .svn-commit.tmp set ft=diff
+  " Set ft to diff for svn_diff.tmp
+  autocmd BufNewFile,BufRead .svn_diff.tmp set ft=diff
+  autocmd BufNewFile,BufRead .svn-commit.tmp set ft=diff
 
-	let $TMP="~/AppData/Local/Temp"
-	set shell=c:\\tools\\cygwin\\bin\\bash.exe
+  let $TMP="~/AppData/Local/Temp"
+  set shell=c:\\tools\\cygwin\\bin\\bash.exe
 
-	" Should this be on all platforms?
-	set guifont=Consolas:h11:cANSI
+  " Should this be on all platforms?
+  set guifont=Consolas:h11:cANSI
 
-	set grepprg=ack.cmd
+  set grepprg=ack.cmd
 
-	set ttymouse=xterm2
+  set ttymouse=xterm2
 
 " Ignore trailing \r characters - Windows, I'm looking at you.
 " match Ignore /\r$/
 
-	nmap <Leader>p :!~/til/workflow/push_static_assets.sh<cr><cr>
+  nmap <Leader>p :!~/til/workflow/push_static_assets.sh<cr><cr>
 
-	" Get some reasonable syntax highlighting in .tpl files.
-	autocmd BufNewFile,BufRead *.tpl set ft=r
+  " Get some reasonable syntax highlighting in .tpl files.
+  autocmd BufNewFile,BufRead *.tpl set ft=r
 
-	" Set random IBM i filetypes
-	" Shamelessly stolen from "http://www.dbg400.net/foswiki/bin/view/DBG400/EditingWithVim"
-	augroup filetypedetect
-		au! BufRead,BufNewFile *.rpg          setfiletype rpg
-		au! BufRead,BufNewFile *.rpgle        setfiletype rpgle
-		au! BufRead,BufNewFile *.clp          setfiletype clp
-		au! BufRead,BufNewFile *.dspf         setfiletype dds
-		au! BufRead,BufNewFile *.prtf         setfiletype dds
-		au! BufRead,BufNewFile *.pf           setfiletype dds
-		au! BufRead,BufNewFile *.lf           setfiletype dds
-		au! BufRead,BufNewFile *.sqlcpp       setfiletype cpp
-	augroup END
+  " Set random IBM i filetypes
+  " Shamelessly stolen from "http://www.dbg400.net/foswiki/bin/view/DBG400/EditingWithVim"
+  augroup filetypedetect
+    au! BufRead,BufNewFile *.rpg          setfiletype rpg
+    au! BufRead,BufNewFile *.rpgle        setfiletype rpgle
+    au! BufRead,BufNewFile *.clp          setfiletype clp
+    au! BufRead,BufNewFile *.dspf         setfiletype dds
+    au! BufRead,BufNewFile *.prtf         setfiletype dds
+    au! BufRead,BufNewFile *.pf           setfiletype dds
+    au! BufRead,BufNewFile *.lf           setfiletype dds
+    au! BufRead,BufNewFile *.sqlcpp       setfiletype cpp
+  augroup END
 
-	" Open current file in VS
-	nmap <silent> <leader>ed :call DevEnvEdit()<CR>
+  " Open current file in VS
+  nmap <silent> <leader>ed :call DevEnvEdit()<CR>
 
-	map <leader>eb :tabe ~/.bash_profile<CR>
-	map <leader>ep :tabe ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1<CR>
-	map <leader>eh :tabe ~/.hotkeys.ahk<CR>
-	map <leader>ec :tabe /Cygwin.bat<CR>
-
-
-	" Counterpart to the GBlame() command from tpope
-	function! SBlame()
-		let current_cursor = getcurpos()
-		let cursor_line = current_cursor[1]
-
-		" Center the screen
-		call setpos('.', current_cursor)
-
-		call RunShellCommand('svn blame %')
-
-		let blame_cursor = getcurpos()
-		let blame_cursor[1] = cursor_line
-
-		" echo current_cursor
-		" echo blame_cursor
-
-		call setpos('.', blame_cursor)
-
-		windo set scrollbind
-	endfunction
+  map <leader>eb :tabe ~/.bash_profile<CR>
+  map <leader>ep :tabe ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1<CR>
+  map <leader>eh :tabe ~/.hotkeys.ahk<CR>
+  map <leader>ec :tabe /Cygwin.bat<CR>
 
 
-	function! DevEnvEdit()
-		!devenv.com /Edit %
-	endfunction
+  " Counterpart to the GBlame() command from tpope
+  function! SBlame()
+    let current_cursor = getcurpos()
+    let cursor_line = current_cursor[1]
 
-	if !exists("*VSBuild")
-		function VSBuild()
-			make silent
-			copen
-		endfunction
-	endif
+    " Center the screen
+    call setpos('.', current_cursor)
+
+    call RunShellCommand('svn blame %')
+
+    let blame_cursor = getcurpos()
+    let blame_cursor[1] = cursor_line
+
+    " echo current_cursor
+    " echo blame_cursor
+
+    call setpos('.', blame_cursor)
+
+    windo set scrollbind
+  endfunction
 
 
-	"
-	"  Visual studio settings
-	"
+  function! DevEnvEdit()
+    !devenv.com /Edit %
+  endfunction
 
-	" Display errors in a vsplit, and don't open new buffers
-	set switchbuf=useopen
+  if !exists("*VSBuild")
+    function VSBuild()
+      make silent
+      copen
+    endfunction
+  endif
 
-	set makeprg=build.sh
-	" set errorformat+=\\\ %#%f(%l)\ :\ %#%t%[A-z]%#\ %m
+  "
+  "  Visual studio settings
+  "
+
+  " Display errors in a vsplit, and don't open new buffers
+  set switchbuf=useopen
+
+  set makeprg=build.sh
+  " set errorformat+=\\\ %#%f(%l)\ :\ %#%t%[A-z]%#\ %m
 
 else
 
@@ -277,13 +276,15 @@ else
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-	" Use spaces instead of tabs
-	set expandtab
-	set ttymouse=urxvt
+  " Use spaces instead of tabs
+  set expandtab
+  set ttymouse=urxvt
 
-	set makeprg=./make.sh
+  if filereadable("./make.sh")
+    set makeprg=./make.sh
+  endif
 
-	set grepprg=ack
+  set grepprg=ack
 
 endif
 
@@ -415,7 +416,7 @@ imap jk <esc>
 
 " break <C-c>; it doesn't fire InsertLeave autocommands, which is bad apparently
 " http://valloric.github.io/YouCompleteMe/#faq
-" 
+"
 " Looks like I've broken the habit, now this is just annoying
 " map <C-c> <esc>iStopit<esc>
 
@@ -497,6 +498,15 @@ function! ToggleQuickfix()
   endif
 endfunction
 
+function! ClearRegs()
+  " Cannot clear . : % registers this way for some reason
+  let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"+*#', '\zs')
+  for r in regs
+    call setreg(r, [])
+  endfor
+endfunction
+
+
 
 " Maven clean/build
 " map <F4> :Mvn clean<CR>
@@ -577,11 +587,10 @@ let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_root_markers = ['Gemfile', 'node_modules', 'package.json']
 
+let g:ctrlp_use_caching = 0
+
 " Do not limit the number of files to index
 let g:ctrlp_max_files = 0
-
-" Persist index cache across sessions
-let g:ctrlp_clear_cache_on_exit=0
 
 " Index .files
 let g:ctrlp_dotfiles = 1
@@ -589,8 +598,8 @@ let g:ctrlp_dotfiles = 1
 " let g:ctrlp_switch_buffer = 0
 " let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
  let g:ctrlp_custom_ignore = {
-		\ 'dir':'\v[\/]\.git$|.*/cache|node_modules|.meteor|vendor|ngrok|composer.lock',
-		\ }
+    \ 'dir':'\v[\/]\.git$|.*/cache|node_modules|.meteor|vendor|ngrok|composer.lock',
+    \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                     LaTeX
@@ -690,7 +699,7 @@ function! RunShellCommand(cmdline)
         let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
      endif
 
-		 " Always quote filepaths expanded with %
+     " Always quote filepaths expanded with %
      if part[0] =~ '%'
         let expanded_part = '"' . fnameescape(expand(part)) . '"'
         let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
@@ -699,7 +708,7 @@ function! RunShellCommand(cmdline)
 
   topleft vnew
   setlocal buftype=nofile "bufhidden=wipe nobuflisted noswapfile nowrap
-	setlocal scrolloff=999
+  setlocal scrolloff=999
   " call setline(1, 'You entered:    ' . a:cmdline)
   " call setline(2, 'Expanded Form:  ' .expanded_cmdline)
   " call setline(3,substitute(getline(2),'.','=','g'))
@@ -709,7 +718,7 @@ function! RunShellCommand(cmdline)
 endfunction
 
 function! FormatJSON()
-	execute '%!python -m json.tool' | w
+  execute '%!python -m json.tool' | w
 endfunction
 " Get highlight group for character under cursor.
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
@@ -726,12 +735,12 @@ function! SwitchSourceHeader()
 endfunction
 
 function! BufResize()
-	vertical res 120
+  vertical res 120
 endfunction
 
 " Strip trailing whitespace
 function! StripWS()
-	:%s/\s\+$//e
+  :%s/\s\+$//e
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -770,135 +779,135 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-
 " when it was compiled.  If it wasn't, time to recompile vim...
 if has("cscope")
 
-		""""""""""""" Standard cscope/vim boilerplate
+    """"""""""""" Standard cscope/vim boilerplate
 
-		" use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
-		set cscopetag
+    " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+    set cscopetag
 
-		" check cscope for definition of a symbol before checking ctags: set to 1
-		" if you want the reverse search order.
-		set csto=0
+    " check cscope for definition of a symbol before checking ctags: set to 1
+    " if you want the reverse search order.
+    set csto=0
 
-		" add any cscope database in current directory
-		if filereadable("cscope.out")
-				cs add cscope.out
-		" else add the database pointed to by environment variable
-		elseif $CSCOPE_DB != ""
-				cs add $CSCOPE_DB
-		endif
+    " add any cscope database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+    " else add the database pointed to by environment variable
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
 
-		" show msg when any other cscope db added
-		set cscopeverbose
+    " show msg when any other cscope db added
+    set cscopeverbose
 
-		""""""""""""" My cscope/vim key mappings
-		"
-		" The following maps all invoke one of the following cscope search types:
-		"
-		"		's'		symbol: find all references to the token under cursor
-		"		'g'		global: find global definition(s) of the token under cursor
-		"		'c'		calls:	find all calls to the function name under cursor
-		"		't'		text:		find all instances of the text under cursor
-		"		'e'		egrep:	egrep search for the word under cursor
-		"		'f'		file:		open the filename under cursor
-		"		'i'		includes: find files that include the filename under cursor
-		"		'd'		called: find functions that function under cursor calls
-		"
-		" Below are three sets of the maps: one set that just jumps to your
-		" search result, one that splits the existing vim window horizontally and
-		" diplays your search result in the new window, and one that does the same
-		" thing, but does a vertical split instead (vim 6 only).
-		"
-		" I've used CTRL-\ and CTRL-@ as the starting keys for these maps, as it's
-		" unlikely that you need their default mappings (CTRL-\'s default use is
-		" as part of CTRL-\ CTRL-N typemap, which basically just does the same
-		" thing as hitting 'escape': CTRL-@ doesn't seem to have any default use).
-		" If you don't like using 'CTRL-@' or CTRL-\, , you can change some or all
-		" of these maps to use other keys.	One likely candidate is 'CTRL-_'
-		" (which also maps to CTRL-/, which is easier to type).  By default it is
-		" used to switch between Hebrew and English keyboard mode.
-		"
-		" All of the maps involving the <cfile> macro use '^<cfile>$': this is so
-		" that searches over '#include <time.h>" return only references to
-		" 'time.h', and not 'sys/time.h', etc. (by default cscope will return all
-		" files that contain 'time.h' as part of their name).
-
-
-		" To do the first type of search, hit 'CTRL-\', followed by one of the
-		" cscope search types above (s,g,c,t,e,f,i,d).	The result of your cscope
-		" search will be displayed in the current window.  You can use CTRL-T to
-		" go back to where you were before the search.
-		"
-
-		nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-		nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-		nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+    """"""""""""" My cscope/vim key mappings
+    "
+    " The following maps all invoke one of the following cscope search types:
+    "
+    "		's'		symbol: find all references to the token under cursor
+    "		'g'		global: find global definition(s) of the token under cursor
+    "		'c'		calls:	find all calls to the function name under cursor
+    "		't'		text:		find all instances of the text under cursor
+    "		'e'		egrep:	egrep search for the word under cursor
+    "		'f'		file:		open the filename under cursor
+    "		'i'		includes: find files that include the filename under cursor
+    "		'd'		called: find functions that function under cursor calls
+    "
+    " Below are three sets of the maps: one set that just jumps to your
+    " search result, one that splits the existing vim window horizontally and
+    " diplays your search result in the new window, and one that does the same
+    " thing, but does a vertical split instead (vim 6 only).
+    "
+    " I've used CTRL-\ and CTRL-@ as the starting keys for these maps, as it's
+    " unlikely that you need their default mappings (CTRL-\'s default use is
+    " as part of CTRL-\ CTRL-N typemap, which basically just does the same
+    " thing as hitting 'escape': CTRL-@ doesn't seem to have any default use).
+    " If you don't like using 'CTRL-@' or CTRL-\, , you can change some or all
+    " of these maps to use other keys.	One likely candidate is 'CTRL-_'
+    " (which also maps to CTRL-/, which is easier to type).  By default it is
+    " used to switch between Hebrew and English keyboard mode.
+    "
+    " All of the maps involving the <cfile> macro use '^<cfile>$': this is so
+    " that searches over '#include <time.h>" return only references to
+    " 'time.h', and not 'sys/time.h', etc. (by default cscope will return all
+    " files that contain 'time.h' as part of their name).
 
 
-		" Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
-		" makes the vim window split horizontally, with search result displayed in
-		" the new window.
-		"
-		" (Note: earlier versions of vim may not have the :scs command, but it
-		" can be simulated roughly via:
-		"		 nmap <C-@>s <C-W><C-S> :cs find s <C-R>=expand("<cword>")<CR><CR>
+    " To do the first type of search, hit 'CTRL-\', followed by one of the
+    " cscope search types above (s,g,c,t,e,f,i,d).	The result of your cscope
+    " search will be displayed in the current window.  You can use CTRL-T to
+    " go back to where you were before the search.
+    "
 
-		nmap <C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
-		nmap <C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-		nmap <C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
 
-		" Hitting CTRL-space *twice* before the search type does a vertical
-		" split instead of a horizontal one (vim 6 and up only)
-		"
-		" (Note: you may wish to put a 'set splitright' in your .vimrc
-		" if you prefer the new window on the right instead of the left
+    " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
+    " makes the vim window split horizontally, with search result displayed in
+    " the new window.
+    "
+    " (Note: earlier versions of vim may not have the :scs command, but it
+    " can be simulated roughly via:
+    "		 nmap <C-@>s <C-W><C-S> :cs find s <C-R>=expand("<cword>")<CR><CR>
 
-		nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-		nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-		nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-		nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR>
 
 
-		""""""""""""" key map timeouts
-		"
-		" By default Vim will only wait 1 second for each keystroke in a mapping.
-		" You may find that too short with the above typemaps.	If so, you should
-		" either turn off mapping timeouts via 'notimeout'.
-		"
-		"set notimeout
-		"
-		" Or, you can keep timeouts, by uncommenting the timeoutlen line below,
-		" with your own personal favorite value (in milliseconds):
-		"
-		set timeoutlen=300
-		"
-		" Either way, since mapping timeout settings by default also set the
-		" timeouts for multicharacter 'keys codes' (like <F1>), you should also
-		" set ttimeout and ttimeoutlen: otherwise, you will experience strange
-		" delays as vim waits for a keystroke after you hit ESC (it will be
-		" waiting to see if the ESC is actually part of a key code like <F1>).
-		"
-		set ttimeout
-		"
-		" personally, I find a tenth of a second to work well for key code
-		" timeouts. If you experience problems and have a slow terminal or network
-		" connection, set it higher.	If you don't set ttimeoutlen, the value for
-		" timeoutlent (default: 1000 = 1 second, which is sluggish) is used.
-		"
-		"set ttimeoutlen=100
+    " Hitting CTRL-space *twice* before the search type does a vertical
+    " split instead of a horizontal one (vim 6 and up only)
+    "
+    " (Note: you may wish to put a 'set splitright' in your .vimrc
+    " if you prefer the new window on the right instead of the left
+
+    nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+
+    """"""""""""" key map timeouts
+    "
+    " By default Vim will only wait 1 second for each keystroke in a mapping.
+    " You may find that too short with the above typemaps.	If so, you should
+    " either turn off mapping timeouts via 'notimeout'.
+    "
+    "set notimeout
+    "
+    " Or, you can keep timeouts, by uncommenting the timeoutlen line below,
+    " with your own personal favorite value (in milliseconds):
+    "
+    set timeoutlen=300
+    "
+    " Either way, since mapping timeout settings by default also set the
+    " timeouts for multicharacter 'keys codes' (like <F1>), you should also
+    " set ttimeout and ttimeoutlen: otherwise, you will experience strange
+    " delays as vim waits for a keystroke after you hit ESC (it will be
+    " waiting to see if the ESC is actually part of a key code like <F1>).
+    "
+    set ttimeout
+    "
+    " personally, I find a tenth of a second to work well for key code
+    " timeouts. If you experience problems and have a slow terminal or network
+    " connection, set it higher.	If you don't set ttimeoutlen, the value for
+    " timeoutlent (default: 1000 = 1 second, which is sluggish) is used.
+    "
+    "set ttimeoutlen=100
 
 endif

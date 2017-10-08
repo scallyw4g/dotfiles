@@ -1,0 +1,66 @@
+#! /bin/sh
+
+PANEL_FONT_MAIN="Inconsolata for Powerline"
+PANEL_FONT_ICON="fontawesome-webfont"
+PANEL_GAP=25
+DOUBLE_PANEL_GAP=$(expr $PANEL_GAP + $PANEL_GAP)
+PANEL_HEIGHT=50
+
+FONTS="-f $PANEL_FONT_MAIN -f $PANEL_FONT_ICON"
+LEMONBAR_UNDERLINE="-u 3"
+
+. panel_colors
+
+# Kill the panel if it is currently running
+if [ $(pgrep -cx lemonbar) -gt 0 ] ; then
+  echo "Restarting Lemonbar"
+  killall lemonbar
+
+  # TODO(Jesse): If this gets restarted a bunch it leaves hanging processes
+  # killall panel
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+Monitors=$(bspc query -M)
+
+
+AtX=$PANEL_GAP
+
+for MonitorID in $Monitors; do
+
+    # remove any open panel fifo, and then create one
+    [ -e "$PANEL_FIFO$MonitorID" ] && rm "$PANEL_FIFO$MonitorID"
+    mkfifo "$PANEL_FIFO$MonitorID"
+
+    bspc subscribe > "$PANEL_FIFO$MonitorID" &
+
+    ~/.config/lemonbar/sys_info.sh $barInfo > "$PANEL_FIFO$MonitorID" &
+
+    ~/.config/lemonbar/sys_info.sh $barInfo > "$PANEL_FIFO$MonitorID" &
+
+    # # info.sh outputs system information.
+    # if [ -z "$(eval echo \$'barInfo'$MonitorID)" ]; then
+    #     /home/scallywag/.config/lemonbar/sys_info.sh $barInfo > "$PANEL_FIFO$MonitorID" &
+    # else
+    #     #Custom bar options per monitor. (defined barInfo$MonitorID var for this monitor)
+    #     /home/scallywag/.config/lemonbar/sys_info.sh $(eval echo \$'barInfo'$MonitorID) > "$PANEL_FIFO$MonitorID" &
+    # fi
+
+    # Grep for current monitor width (will be first number regex match from bspc query command below).
+    MonitorWidth=$(node -e " var json = $(bspc query -T -m $MonitorID); console.log(json.rectangle.width);" )
+
+
+    LemonbarWidth=$(expr $MonitorWidth - $DOUBLE_PANEL_GAP)
+
+    cat "$PANEL_FIFO$MonitorID"                                    \
+        | panel_bar                                                \
+        | lemonbar $LEMONBAR_UNDERLINE $FONTS -B $COLOR_BACKGROUND \
+        -g "$LemonbarWidth"x"$PANEL_HEIGHT"+"$AtX"+"$PANEL_GAP" | sh &
+
+    AtX=$(expr $MonitorWidth + $AtX)
+
+done
+
+wait
+

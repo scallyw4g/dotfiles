@@ -191,3 +191,7 @@ stty -ixon
 
 export NVM_DIR="/home/scallywag/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+
+bindkey "^P" up-line-or-search
+bindkey "^N" down-line-or-search

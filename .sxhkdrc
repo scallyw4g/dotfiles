@@ -1,0 +1,190 @@
+#
+###### BSPWM Hotkeys
+#
+#
+###### Windows
+#
+
+# Focus / Window movement
+alt + {h,j,k,l}
+  bspc node -f {west,south,north,east}
+
+# Preselect window area
+super + ctrl + {h,j,k,l}
+  bspc node -p {west,south,north,east}
+
+# Kill window
+super + q
+  bspc node -c
+
+# Clear window pre-selections
+super + ctrl + {_,shift + } space
+  bspc {node -p cancel,desktop -c}
+
+# Send window and focus Desktop
+shift + alt + {a-z}
+  monitor=$(bspc query -m focused -M); \
+  desktop="$monitor|{a-z}"; \
+  bspc window -d $desktop; \
+  bspc desktop $desktop -f
+
+# Send window to Desktop
+shift + alt + ctrl + {a-z}
+  monitor=$(bspc query -m focused -M); \
+  desktop="$monitor|{a-z}"; \
+  bspc node -d $desktop
+
+# Send window to Monitor
+shift + alt + {1-9,0} + {a-z,0,1-9}
+  desktop={1-9,0}|{a-z,0,1-9}; \
+  bspc node -d $desktop
+
+#
+###### Desktops
+#
+
+# Focus or Create a desktop
+ctrl + alt + {1-9,0,a-z}
+  monitor=$(bspc query -m focused -M --names); \
+  desktop="$monitor|{1-9,0,a-z}"; \
+  bspc desktop -f $desktop || \
+  bspc monitor $monitor -a $desktop
+
+# Cycle Desktops
+ctrl + alt + bracket{left,right}
+  bspc desktop -f {prev,next}
+
+# Kill specific Desktop
+ctrl + alt + space; {1-9,0,a-z} ;
+monitor=$(bspc query -m focused -M --names); \
+  desktop="$monitor|{1-9,0,a-z}"; \
+  bspc desktop $desktop -r
+
+# Kill focused desktop
+ctrl + alt + space ; ctrl + alt + space
+  bspc desktop focused -r
+
+#
+###### Stock Config
+#
+
+super + shift + Escape
+  bspc quit
+
+super + {s,f,t}
+  bspc node -t {floating,fullscreen,tiled}
+
+super + apostrophe
+  bspc node -s last
+
+super + {o,i}
+  bspc control --record-history off; \
+  bspc node {older,newer} -f; \
+  bspc control --record-history on
+
+super + y
+  bspc node -w last.manual
+
+super + {_,shift + }c
+  bspc node -f {next,prev}
+
+super + alt + {h,j,k,l}
+  bspc node -e {left -10,down +10,up -10,right +10}
+
+super + alt + shift + {h,j,k,l}
+  bspc node -e {right -10,up +10,down -10,left +10}
+
+super + ctrl + {1-9}
+  bspc node -r 0.{1-9}
+
+super + {_,shift + }{1-9,0}
+  bspc {desktop -f,node -d} ^{1-9,0}
+
+~button1
+  bspc pointer -g focus
+
+super + button1
+  bspc pointer -g move
+
+super + button2
+  bspc pointer -g resize_corner
+
+
+super + !button{1-3}
+  bspc pointer -t %i %i
+
+super + @button{1-3}
+  bspc pointer -u
+
+
+
+
+
+
+#
+###### WM Independent Hotkeys
+#
+
+
+
+
+#
+###### BACKLIGHT
+#
+super + Down
+  dec_backlight.sh
+
+super + Up
+  inc_backlight.sh
+
+#
+###### MPD
+
+super + {n,b,p}
+  mpc {next,prev,toggle}
+
+super + {equal,minus}
+  mpc volume {+5,-5}
+
+super + v
+  pavucontrol
+
+
+#
+###### APPLICATIONS
+#
+
+super + Return
+# For some inexplicable reason we need to define the name parameter
+# so that perl extensions work. This is a complete mystery.
+  urxvt -name "URxvt" &
+
+super + g
+  firefox &
+
+super + shift + g
+  chromium  --force-device-scale-factor=1.8 &
+
+super + m
+  musicplayer &
+
+super + d
+  dmenu_run \
+# Fuzzy search
+  -z \
+# Dim screen 20%
+  -dim 0.2 \
+# 10 lines
+  -l 10 \
+# Width of menu window
+  -w 1500 \
+# Offset from the left edge of screen
+  -x 1170 \
+# Offset from the top edge of screen
+  -y 650
+
+
+# Reload sxhkd
+super + Escape
+  pkill -USR1 -x sxhkd
+

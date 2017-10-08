@@ -1,0 +1,38 @@
+#! /bin/zsh
+
+# This gets overridden when a terminal is opened by zshrc. Effectively this
+# makes everything but terminals have border_width 5
+
+bspc config focused_border_color          \#E941EB
+
+# For whatever reason, launching lemonbar is fucking this up, so set it in
+# .zshrc instead.  Feels bad man..
+# bspc config top_padding                   80
+bspc config window_gap                    25
+
+bspc config focus_follows_pointer         on
+bspc config pointer_follows_focus         on
+
+bspc config split_ratio                   0.50
+
+# bspc config remove_unplugged_monitors   on
+# bspc config remove_disabled_monitors    on
+
+bspc config pointer_modifier control
+
+# bspc rule -a pavucontrol    sticky=on   floating=on
+# bspc rule -a musicplayer    sticky=on   floating=on
+
+# bspc rule -a scratchpad     sticky=on   floating=on
+
+
+monitors=($(bspc query -M))
+i=0
+
+for monitor in $monitors; do
+  bspc monitor $monitor --rename $i --reset-desktops "$i|1" "$i|2"
+  let i++
+done
+
+~/.config/lemonbar/panel &
+

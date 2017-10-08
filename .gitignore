@@ -29,9 +29,10 @@
 !.Xresources
 !.XresourcesColors
 
-!.config/lemonbar/
-!.config/bspwm/*
-!.config/sxhkd/sxhkdrc
+!.lemonbar/
+
+!.bspwmrc
+!.sxhkdrc
 
 !.xmodmap
 !.xinitrc

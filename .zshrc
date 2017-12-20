@@ -1,9 +1,11 @@
 [ -f $HOME/.env ] && . ~/.env
 
-alias tree='tree -I "node_modules|bower_components"'
+shell-startup.sh
+
+alias tree='tree -I "node_modules|bower_components|CMakeFiles"'
 
 # Override border width whenever a terminal is opened.
-# bspc config -n focused border_width 2
+# bspc config -n focused border_width 1
 
 # For some reason opening lemonbar is fucking this up
 bspc config top_padding 80

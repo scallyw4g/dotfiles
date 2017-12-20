@@ -23,16 +23,16 @@ super + ctrl + {_,shift + } space
 
 # Send window and focus Desktop
 shift + alt + {a-z}
-  monitor=$(bspc query -m focused -M); \
+  monitor=$(bspc query -m focused -M --names); \
   desktop="$monitor|{a-z}"; \
-  bspc window -d $desktop; \
-  bspc desktop $desktop -f
+  bspc node --to-desktop "$desktop"; \
+  bspc desktop "$desktop" -f
 
 # Send window to Desktop
 shift + alt + ctrl + {a-z}
-  monitor=$(bspc query -m focused -M); \
+  monitor=$(bspc query -m focused -M --names); \
   desktop="$monitor|{a-z}"; \
-  bspc node -d $desktop
+  bspc node -d "$desktop"
 
 # Send window to Monitor
 shift + alt + {1-9,0} + {a-z,0,1-9}
@@ -186,5 +186,5 @@ super + d
 
 # Reload sxhkd
 super + Escape
-  pkill -USR1 -x sxhkd
+  pkill -USR1 -x sxhkd -c ~/.sxhkdrc
 

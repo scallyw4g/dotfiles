@@ -40,7 +40,7 @@ Plugin 't9md/vim-quickhl'          " On they fly keyword highlighting
 Plugin 'godlygeek/tabular'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mileszs/ack.vim'
-Plugin 'sirver/ultisnips'
+"Plugin 'sirver/ultisnips'
 Plugin 'vim-airline/vim-airline'
 
 " This shit should be illegal. God bless Tim Pope
@@ -62,7 +62,6 @@ Plugin 'ap/vim-css-color'
 
 if IsUnix()
   Plugin 'scrooloose/syntastic'    " This doesn't work with MSVC.. standard.
-  Plugin 'omnisharp/omnisharp-vim' " Not currently using this on WIN32
   Plugin 'dag/vim-fish'            " Fish filetype detection, among others
 
 endif

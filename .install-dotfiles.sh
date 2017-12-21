@@ -7,18 +7,20 @@ if [ "$1" == "ubuntu" ]; then
 elif [ "$1" == "arch" ]; then
   echo "Installing for arch-linux"
   INSTALL="sudo pacman --noconfirm -S"
-
+else
+  echo "Unsupported distro $1"
+  exit 1
 fi
 
 # Setup Zsh
-# $INSTALL zsh zsh-completions
-# chsh $(which zsh)
+$INSTALL zsh
+# chsh -s $(which zsh)
 
 # Install package dependencies
-$INSTALL firefox mpd sxhkd bspwm ack vim git
+$INSTALL firefox mpd sxhkd bspwm ack vim git rxvt-unicode
 
-
-
+git config --global user.name "Jesse"
+git config --global user.email "jesse.hughes.it@gmail.com"
 
 # Install rbenv and ruby-build
 # if [ ! -d $HOME/.rbenv ]; then
@@ -33,4 +35,7 @@ if [ ! -d $HOME/.vim/bundle/Vundle.vim ]; then
 	git clone https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 fi
 
-
+if [ ! -d $HOME/dotfiles ]; then
+	echo "Installing dotfiles"
+  git clone https://github.com/jjbandit/dotfiles.git
+fi

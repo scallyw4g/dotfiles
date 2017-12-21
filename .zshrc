@@ -1,9 +1,11 @@
 [ -f $HOME/.env ] && . ~/.env
 
-alias tree='tree -I "node_modules|bower_components"'
+[ -f $HOME/.scripts/shell-startup.sh ] && $HOME/.scripts/shell-startup.sh
+
+alias tree='tree -I "node_modules|bower_components|CMakeFiles"'
 
 # Override border width whenever a terminal is opened.
-# bspc config -n focused border_width 2
+# bspc config -n focused border_width 1
 
 # For some reason opening lemonbar is fucking this up
 bspc config top_padding 80
@@ -14,7 +16,10 @@ export IRIS_DATABASE_USER=iris
 export EDITOR=vim
 
 # Manage ssh-agents with keychain
-eval $(keychain --eval --agents ssh -Q --quiet $HOME/.ssh/id_ecdsa)
+keychain > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  eval $(keychain --eval --agents ssh -Q --quiet $HOME/.ssh/id_ecdsa)
+fi
 
 # some completion speeding
 __git_files () {
@@ -49,8 +54,11 @@ zstyle -e ':completion:*:approximate:*' max-errors \
 
 
 # Completion for lowercase vbox commands
-compdef vboxmanage=VBoxManage
-compdef vboxheadless=VBoxHeadless
+VBoxManage > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  compdef vboxmanage=VBoxManage
+  compdef vboxheadless=VBoxHeadless
+fi
 
 
 # Set prompt styling
@@ -161,8 +169,11 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # Rbenv stuff
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+rbenv > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
 
 # Ruby build stuff
 export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"

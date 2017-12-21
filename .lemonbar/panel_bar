@@ -41,40 +41,43 @@ while read -r line ; do
 
         case $item in
 
-          M*) # Active monitor
+          M*) # Focused monitor
             [ $MonitorsEnumerated -gt 0 ] && wm_info="${wm_info}   "
             MonitorsEnumerated=$(expr $MonitorsEnumerated + 1)
             MonitorFocused=1
+
+            Underline=$PURPLE_UNDERLINE
+            Foreground=$PURPLE_UNDERLINE
           ;;
 
-          m*) # Inactive Monitor
+          m*) # Focused Monitor
             [ $MonitorsEnumerated -gt 0 ] && wm_info="${wm_info}   "
             MonitorsEnumerated=$(expr $MonitorsEnumerated + 1)
             MonitorFocused=0
           ;;
 
-          [F,U]*) # Focused Free, Focused Urgent
+          [F,U]*) # Active Free, Focused Urgent
             if [ $MonitorFocused -eq 1 ]; then
               Underline=$PINK_UNDERLINE
               Foreground=$OPAQ$BLUE
             fi
           ;;
 
-          O*) # Focused Occupied
+          O*) # Active Occupied
             Foreground=$OPAQ$BLUE
             if [ $MonitorFocused -eq 1 ]; then
               Underline=$PINK_UNDERLINE
             fi
           ;;
 
-          o*) # Unfocused Occupied
+          o*) # Inactive Occupied
             Foreground=$OPAQ$BLUE
           ;;
 
-          f*) # Unfocused Free
+          f*) # Inactive Free
           ;;
 
-          u*) # Unfocused Urgent
+          u*) # Inactive Urgent
           ;;
 
           *) # Eat unwanted messages

@@ -29,7 +29,10 @@ alias gr='git reset HEAD'
 alias grh='git reset --hard HEAD'
 
 # Alias for hub
-eval "$(hub alias -s)"
+hub > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  eval "$(hub alias -s)"
+fi
 
 alias art='php artisan'
 

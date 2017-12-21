@@ -8,20 +8,6 @@ pulseaudio &
 # export GDK_SCALE=2
 # export QT_DEVICE_PIXEL_RATIO=2
 
-export XDG_CONFIG_HOME="$HOME/.config"
-
-export MPD_HOST=127.0.0.1
-export MPD_PORT=6600
-
-# Include for lemonbar
-export PATH=$PATH:$HOME/.lemonbar
-export PANEL_FIFO="/tmp/panel-fifo"
-
-# Swap Ctrl and Caps Lock
- setxkbmap -option ctrl:swapcaps
-
-# And include Xresources
-[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources &
 
 # start compon
 compton -Cfb --config $HOME/.config/compton.conf
@@ -34,6 +20,6 @@ syndaemon -d -K -i 0.25
 
 # xrandr --output HDMI-0 --auto --left-of eDP-0
 
-sxhkd &
+sxhkd -c ~/.sxhkdrc &
 
-exec bspwm
+exec bspwm -c ~/.bspwmrc

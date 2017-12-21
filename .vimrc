@@ -61,9 +61,9 @@ Plugin 'digitaltoad/vim-jade'
 Plugin 'ap/vim-css-color'
 
 if IsUnix()
-  Plugin 'scrooloose/syntastic'    " This doesn't work with MSVC.. standard.
+  " Plugin 'scrooloose/syntastic'    " This doesn't work with MSVC.. standard.
+  Plugin 'omnisharp/omnisharp-vim' " Not currently using this on WIN32
   Plugin 'dag/vim-fish'            " Fish filetype detection, among others
-
 endif
 
 " Plugin 'vim-scripts/autoclose'
@@ -83,7 +83,7 @@ syntax on
 
 set background=dark
 
-colorscheme solarized
+" colorscheme solarized
 
 " High contrast dark theme
 " colorscheme Tomorrow-Night-Blue
@@ -98,7 +98,7 @@ colorscheme solarized
 " colorscheme bvemu
 
 " Muted dark themes
-" colorscheme badwolf
+colorscheme badwolf
 " colorscheme blazer
 
 " Left off here
@@ -122,6 +122,8 @@ highlight clear SignColumn
 " Clear background
 highlight Normal ctermbg=NONE
 highlight NonText ctermbg=NONE
+
+highlight markdownError ctermbg=NONE
 
 " Clear underline on Tabs
 highlight TabLine cterm=NONE ctermbg=NONE
@@ -164,6 +166,7 @@ highlight NonText ctermbg=NONE
 highlight Folded ctermbg=NONE
 
 highlight cErrInBracket ctermbg=NONE
+highlight htmlError ctermbg=NONE
 
 " Make the cursor line readable in diff-mode
 autocmd filetype diff highlight clear CursorLine
@@ -377,7 +380,7 @@ autocmd BufNewFile,BufRead .vimperatorrc set ft=vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                    Syntastic
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_cpp_compiler_options  = "-I./external/glm-0.9.7.1/ -I./src/ -I./src/GL"
+" let g:syntastic_cpp_compiler_options  = "-DDEBUG=1 -I./external/glm-0.9.7.1/ -I./src/ -I./src/GL/ -I./src/datatypes/"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   Status Line
@@ -485,6 +488,8 @@ nnoremap <Leader><Leader> <C-^>
 nnoremap <Leader>d :call delete(expand('%'))<CR>
 
 nnoremap <Leader>q :call ToggleQuickfix()<CR>
+
+nnoremap <Leader>t :Tabularize<CR>
 
 function! ToggleQuickfix()
   if exists("g:qfix_win")
@@ -618,6 +623,9 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set scss as css files for syntax highlighting
 autocmd BufNewFile,BufRead *.scss set ft=css
+
+" Mustache as html
+autocmd BufNewFile,BufRead *.mustache set ft=html
 
 " Set deface as html
 autocmd BufNewFile,BufRead *.deface set ft=html

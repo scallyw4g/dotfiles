@@ -1,4 +1,4 @@
-#!/bin/sh
+!/bin/sh
 
 # Background -- Try setting this first because it's visual
 nitrogen --restore &

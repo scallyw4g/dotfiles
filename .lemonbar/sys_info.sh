@@ -18,6 +18,8 @@ clock()
 
 battery()
 {
+  acpi > /dev/null 2>&1 || exit 0
+
   chargeState=$(acpi -b | awk '{ print $3}' | sed 's/,//g')
   batteryPerc=$(acpi -b | awk '{ print $4 }' | sed 's/%,*//g ')
   color=$GREEN
@@ -85,7 +87,7 @@ network()
   # Get address
   icon="\uF1EB"
   color=$GREEN
-  addr=$(hostname --ip-addresses)
+  addr=$(hostname -i)
 
   ping -c 1 8.8.8.8 > /dev/null 2>&1
   if [[ $? -ne 0 ]]; then

@@ -34,6 +34,9 @@ Plugin 'leafgarland/typescript-vim'
 " CPP
 Plugin 'octol/vim-cpp-enhanced-highlight'
 
+" Rust
+Plugin 'rust-lang/rust.vim'
+
 " Utilities
 Plugin 't9md/vim-quickhl'          " On they fly keyword highlighting
 
@@ -42,6 +45,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'mileszs/ack.vim'
 "Plugin 'sirver/ultisnips'
 Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " This shit should be illegal. God bless Tim Pope
 Plugin 'tpope/vim-surround'
@@ -62,7 +66,7 @@ Plugin 'ap/vim-css-color'
 
 if IsUnix()
   " Plugin 'scrooloose/syntastic'    " This doesn't work with MSVC.. standard.
-  Plugin 'omnisharp/omnisharp-vim' " Not currently using this on WIN32
+  " Plugin 'omnisharp/omnisharp-vim' " Not currently using this on WIN32
   Plugin 'dag/vim-fish'            " Fish filetype detection, among others
 endif
 
@@ -171,6 +175,7 @@ highlight htmlError ctermbg=NONE
 " Make the cursor line readable in diff-mode
 autocmd filetype diff highlight clear CursorLine
 
+set t_Co=256
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -295,6 +300,10 @@ endif
 "                                 COMMON CONFIG
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+if filereadable("./Cargo.toml")
+  set makeprg=cargo\ build
+endif
 
 
 " Toggle background colors ..?
@@ -429,6 +438,8 @@ nmap <C-b> :cp<CR>zO
 " Quick-switch between source and header
 nmap <leader>h :call SwitchSourceHeader()<CR>
 
+nmap <leader>t :CtrlPTag<cr>
+
 
 """"""""""""""""""""""""""""""""""""""""
 "      Quick Edit Conf files
@@ -488,8 +499,6 @@ nnoremap <Leader><Leader> <C-^>
 nnoremap <Leader>d :call delete(expand('%'))<CR>
 
 nnoremap <Leader>q :call ToggleQuickfix()<CR>
-
-nnoremap <Leader>t :Tabularize<CR>
 
 function! ToggleQuickfix()
   if exists("g:qfix_win")
@@ -589,7 +598,7 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/.stack-work/*
 
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_root_markers = ['Gemfile', 'node_modules', 'package.json']
+let g:ctrlp_root_markers = ['Gemfile', 'node_modules', 'package.json', '.root-dir']
 
 let g:ctrlp_use_caching = 0
 
@@ -641,6 +650,9 @@ autocmd BufNewFile,BufRead *Xresource* set ft=xdefaults
 
 " Typescript to Javascript
 autocmd BufNewFile,BufRead *ts set ft=javascript
+
+" twig
+autocmd BufNewFile,BufRead *twig set ft=html
 
 " GLSL
 autocmd BufNewFile,BufRead *shader set ft=glsl

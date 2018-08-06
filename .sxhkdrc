@@ -21,43 +21,50 @@ super + q
 super + ctrl + {_,shift + } space
   bspc {node -p cancel,desktop -c}
 
+# Send window to Monitor
+# ctrl + alt + {1-9,0} + {a-z}
+#   desktop="{1-9,0}|{a-z}"; \
+#   bspc node -d "$desktop"
+
 # Send window and focus Desktop
-shift + alt + {a-z}
+ctrl + alt + {a-z}
   monitor=$(bspc query -m focused -M --names); \
-  desktop="$monitor|{a-z}"; \
-  bspc node --to-desktop "$desktop"; \
-  bspc desktop "$desktop" -f
+  desktop="$monitor|{a-z}";                    \
+  bspc desktop "$desktop" -f;                  \
+  if [ $? -ne 0 ]; then;                       \
+    echo "Creating" ;                          \
+    bspc monitor "$monitor" -a "$desktop";     \
+  else                                         \
+    echo "Moving to $desktop";                 \
+    bspc node focused --to-desktop "$desktop"; \
+  fi
 
 # Send window to Desktop
-shift + alt + ctrl + {a-z}
-  monitor=$(bspc query -m focused -M --names); \
-  desktop="$monitor|{a-z}"; \
-  bspc node -d "$desktop"
-
-# Send window to Monitor
-shift + alt + {1-9,0} + {a-z,0,1-9}
-  desktop={1-9,0}|{a-z,0,1-9}; \
-  bspc node -d $desktop
+# shift + alt + ctrl + {a-z}
+  # echo "HI" > ~/hi
+  # monitor=$(bspc query -m focused -M --names); \
+  # desktop="$monitor|{a-z}"; \
+  # bspc node -d "$desktop"
 
 #
 ###### Desktops
 #
 
-# Focus or Create a desktop
-ctrl + alt + {1-9,0,a-z}
-  monitor=$(bspc query -m focused -M --names); \
-  desktop="$monitor|{1-9,0,a-z}"; \
-  bspc desktop -f $desktop || \
-  bspc monitor $monitor -a $desktop
+# # Focus or Create a desktop
+# ctrl + alt + {a-z}
+#   monitor=$(bspc query -m focused -M --names); \
+#   desktop="$monitor|{a-z}"; \
+#   bspc desktop -f "$desktop" || \
+#   bspc monitor "$monitor" -a "$desktop"
 
 # Cycle Desktops
 ctrl + alt + bracket{left,right}
   bspc desktop -f {prev,next}
 
 # Kill specific Desktop
-ctrl + alt + space; {1-9,0,a-z} ;
+ctrl + alt + space; {a-z} ;
 monitor=$(bspc query -m focused -M --names); \
-  desktop="$monitor|{1-9,0,a-z}"; \
+  desktop="$monitor|{a-z}"; \
   bspc desktop $desktop -r
 
 # Kill focused desktop
@@ -169,22 +176,23 @@ super + m
   musicplayer &
 
 super + d
-  dmenu_run \
-# Fuzzy search
-  -z \
-# Dim screen 20%
-  -dim 0.2 \
-# 10 lines
-  -l 10 \
-# Width of menu window
-  -w 1500 \
-# Offset from the left edge of screen
-  -x 1170 \
-# Offset from the top edge of screen
-  -y 650
+  dmenu_run
+
+# # Fuzzy search
+#   -z \
+# # Dim screen 20%
+#   -dim 0.2 \
+# # 10 lines
+#   -l 10 \
+# # Width of menu window
+#   -w 1500 \
+# # Offset from the left edge of screen
+#   -x 1170 \
+# # Offset from the top edge of screen
+#   -y 650
 
 
 # Reload sxhkd
 super + Escape
-  pkill -USR1 -x sxhkd -c ~/.sxhkdrc
-
+  pkill sxhkd; \
+  sxhkd -c ~/.sxhkdrc > .sxhkdrc.log 2>&1 &

@@ -1,12 +1,12 @@
 #! /bin/sh
 
-PANEL_FONT_MAIN="Inconsolata for Powerline"
+PANEL_FONT_MAIN="Inconsolata for Powerline:size=20"
 PANEL_FONT_ICON="fontawesome-webfont"
 PANEL_GAP=25
 DOUBLE_PANEL_GAP=$(expr $PANEL_GAP + $PANEL_GAP)
 PANEL_HEIGHT=50
 
-FONTS="-f $PANEL_FONT_MAIN -f $PANEL_FONT_ICON"
+FONTS=""
 LEMONBAR_UNDERLINE="-u 2"
 
 . panel_colors
@@ -51,13 +51,16 @@ for MonitorID in $Monitors; do
 
     LemonbarWidth=$(expr $MonitorWidth - $DOUBLE_PANEL_GAP)
 
-    cat "$PANEL_FIFO$MonitorID"                                    \
-        | panel_bar                                                \
-        | lemonbar $LEMONBAR_UNDERLINE $FONTS -B $COLOR_BACKGROUND \
-        -g "$LemonbarWidth"x"$PANEL_HEIGHT"+"$AtX"+"$PANEL_GAP" | sh &
+    cat "$PANEL_FIFO$MonitorID"                                             \
+        | panel_bar                                                         \
+        | lemonbar $LEMONBAR_UNDERLINE -B $COLOR_BACKGROUND                 \
+                    -f "$PANEL_FONT_MAIN" -f "$PANEL_FONT_ICON"             \
+                    -g "$LemonbarWidth"x"$PANEL_HEIGHT"+"$AtX"+"$PANEL_GAP" \
+        | sh &
+
+    xdo above -t $(xdo id -n root) $(xdo id -n lemonbar)
 
     AtX=$(expr $MonitorWidth + $AtX)
-
 done
 
 wait

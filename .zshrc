@@ -4,6 +4,10 @@
 
 alias tree='tree -I "node_modules|bower_components|CMakeFiles"'
 
+export TERM=xterm-256color
+
+setxkbmap -layout us -option ctrl:swapcaps
+
 # Override border width whenever a terminal is opened.
 # bspc config -n focused border_width 1
 
@@ -169,8 +173,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # Rbenv stuff
-rbenv > /dev/null 2>&1
-if [ $? -eq 0 ]; then
+if [ -d $HOME/.rbenv ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
 fi
@@ -181,6 +184,9 @@ export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 # export PATH="$HOME/.phpenv/bin:$PATH"
 # eval "$(phpenv init -)"
 
+# Stack for Haskell
+export PATH=$HOME/.local/bin:$PATH
+
 export PGDATA="/var/lib/postgres/data"
 export PATH=$PATH:$HOME/bin
 
@@ -188,21 +194,14 @@ export PATH=$PATH:$HOME/bin
 export PATH=$PATH:~/.node_modules/bin
 export npm_config_prefix=~/.node_modules
 
-# apm
-export PATH=$PATH:~/etc/apm/bin/
-
 # Global composer packages
 export PATH=$PATH:~/.composer/vendor/bin
-
-export MONO_PATH=/home/scallywag/www/test-mono-app/NPOI-Binary/dotnet4
-export MCS_COLORS=errors=red
 
 # Disable <C-s> scroll-lock / SFC on-off
 stty -ixon
 
 export NVM_DIR="/home/scallywag/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
 
 bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search

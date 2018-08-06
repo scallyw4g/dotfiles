@@ -1,5 +1,6 @@
 # add .scripts to PATH
 export PATH="$HOME/.scripts:$PATH"
+export PATH="$HOME/emsdk:$HOME/emsdk/clang/fastcomp/build_incoming_64/bin:$HOME/emsdk/node/8.9.1_64bit/bin:$HOME/emsdk/emscripten/incoming:$HOME/emsdk/binaryen/master_64bit_binaryen/bin:$PATH"
 export PGDATA="/var/lib/postgres/data"
 
 # some more ls aliases
@@ -10,12 +11,18 @@ alias l.='ls -ld .[^.]*'
 alias md='mkdir -p'
 
 # Git aliases
-alias gca='git commit -a'
-alias gc='git commit'
+alias gca='git commit -a --verbose'
+alias gc='git commit --verbose'
 
-alias gl='git log --pretty="%C(auto) %h %s"'
-alias gls='gl -n 20' # Think `git log short`
-alias glt='gl --after="yesterday"' # Think `git log today`
+function GitLogFunc()
+{
+  ColumnDelimeter='!@#$%^&*&^%$#@!'
+  git log --pretty="%C(auto) %h $ColumnDelimeter %an $ColumnDelimeter %s" "$@" | column -t -s "$ColumnDelimeter"
+}
+
+alias gl='GitLogFunc | less'
+alias gls='GitLogFunc -n 20' # Think `git log short`
+alias glt='GitLogFunc --after="yesterday"' # Think `git log today`
 
 alias gs='git status'
 

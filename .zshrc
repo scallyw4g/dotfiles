@@ -2,7 +2,9 @@
 
 [ -f $HOME/.scripts/shell-startup.sh ] && $HOME/.scripts/shell-startup.sh
 
-alias tree='tree -I "node_modules|bower_components|CMakeFiles"'
+[ -f $HOME/emsdk/emsdk_env.sh ] && . $HOME/emsdk/emsdk_env.sh > /dev/null
+
+alias tree='tree -I "node_modules|bower_components|CMakeFiles|_site|static"'
 
 export TERM=xterm-256color
 
@@ -12,7 +14,7 @@ setxkbmap -layout us -option ctrl:swapcaps
 # bspc config -n focused border_width 1
 
 # For some reason opening lemonbar is fucking this up
-bspc config top_padding 80
+# bspc config top_padding 80
 
 export IRIS_DATABASE_USER=iris
 
@@ -78,9 +80,9 @@ GIT_PROMPT_SUFFIX="%{$fg[green]%}]%{$reset_color%}"
 GIT_PROMPT_AHEAD="%{$fg[red]%}ANUM%{$reset_color%}"
 GIT_PROMPT_BEHIND="%{$fg[cyan]%}BNUM%{$reset_color%}"
 GIT_PROMPT_MERGING="%{$fg_bold[magenta]%}⚡︎%{$reset_color%}"
-GIT_PROMPT_UNTRACKED="%{$fg_bold[red]%}●%{$reset_color%}"
-GIT_PROMPT_MODIFIED="%{$fg_bold[yellow]%}●%{$reset_color%}"
-GIT_PROMPT_STAGED="%{$fg_bold[green]%}●%{$reset_color%}"
+GIT_PROMPT_UNTRACKED="%{$fg_bold[red]%}*%{$reset_color%}"
+GIT_PROMPT_MODIFIED="%{$fg_bold[yellow]%}*%{$reset_color%}"
+GIT_PROMPT_STAGED="%{$fg_bold[green]%}*%{$reset_color%}"
 
 # Show Git branch/tag, or name-rev if on detached head
 parse_git_branch() {
@@ -200,8 +202,8 @@ export PATH=$PATH:~/.composer/vendor/bin
 # Disable <C-s> scroll-lock / SFC on-off
 stty -ixon
 
-export NVM_DIR="/home/scallywag/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# export NVM_DIR="/home/scallywag/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search

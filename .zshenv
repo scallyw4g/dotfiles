@@ -20,17 +20,17 @@ function GitLogFunc()
   git log --pretty="%C(auto) %h $ColumnDelimeter %an $ColumnDelimeter %s" "$@" | column -t -s "$ColumnDelimeter"
 }
 
-alias gl='GitLogFunc | less'
+alias gl='GitLogFunc | less -R'
 alias gls='GitLogFunc -n 20' # Think `git log short`
 alias glt='GitLogFunc --after="yesterday"' # Think `git log today`
 
 alias gs='git status'
 
-alias gd='git diff'
-alias gdw='git diff -w'
+alias gd='git diff --color | diff-so-fancy | less -R'
+alias gdw='git diff -w --color | diff-so-fancy | less -R'
 
-alias gdc='git diff --cached'
-alias gdcw='git diff --cached -w'
+alias gdc='git diff --cached --color | diff-so-fancy | less -R'
+alias gdcw='git diff --cached -w --color | diff-so-fancy | less -R'
 
 alias gr='git reset HEAD'
 alias grh='git reset --hard HEAD'

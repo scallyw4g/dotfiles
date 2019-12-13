@@ -2,8 +2,6 @@
 
 sxhkd -c ~/.sxhkdrc &
 
-urxvt &
-
 # This gets overridden when a terminal is opened by zshrc. Effectively this
 # makes everything but terminals have border_width 5
 
@@ -26,9 +24,11 @@ bspc config pointer_modifier control
 # bspc rule -a pavucontrol    sticky=on   floating=on
 # bspc rule -a musicplayer    sticky=on   floating=on
 
+xrandr --output VGA-1-1 --off
+xrandr --output DP-0 --auto --primary
+xrandr --output DP-4 --auto --right-of DP-0
+
 # bspc rule -a scratchpad     sticky=on   floating=on
-
-
 monitors=($(bspc query -M))
 i=0
 

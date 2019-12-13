@@ -2,11 +2,7 @@ set nocompatible " Be Improved
 
 
 function! IsWin32()
-  if has("win32unix") || has("win32") " Cygwin || Regular Win32
-    return 1
-  else
-    return 0
-  endif
+  return has("win32unix") || has("win32") " Cygwin || Regular Win32
 endfunction
 
 function! IsUnix()
@@ -22,52 +18,57 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
+" Linting
+Plugin 'dense-analysis/ale'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'peitalin/vim-jsx-typescript'
+
 " Colors
-Plugin 'flazz/vim-colorschemes'
+" Plugin 'flazz/vim-colorschemes'
+
 Plugin 'tikhomirov/vim-glsl'
 
 " Javascript
-Plugin 'isRuslan/vim-es6'
-Plugin 'pangloss/vim-javascript'
-Plugin 'leafgarland/typescript-vim'
+" Plugin 'isRuslan/vim-es6'
+" Plugin 'pangloss/vim-javascript'
 
 " CPP
 Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Rust
-Plugin 'rust-lang/rust.vim'
+" Plugin 'rust-lang/rust.vim'
 
 " Utilities
-Plugin 't9md/vim-quickhl'          " On they fly keyword highlighting
+" Plugin 't9md/vim-quickhl'          " On they fly keyword highlighting
 
 Plugin 'godlygeek/tabular'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mileszs/ack.vim'
 "Plugin 'sirver/ultisnips'
 Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'vim-airline/vim-airline-themes'
 
-" This shit should be illegal. God bless Tim Pope
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
+" Shit that's so good it should be illegal. God bless Tim Pope
+" Plugin 'tpope/vim-surround'
+" Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-dispatch'        " Don't think this works on WIN32 ..?
+" Plugin 'tpope/vim-dispatch'        " Don't think this works on WIN32 ..?
 
 " Rails
-Plugin 'tpope/vim-rake'
-Plugin 'tpope/vim-bundler'
+" Plugin 'tpope/vim-rake'
+" Plugin 'tpope/vim-bundler'
 
 " Colors
-Plugin 'altercation/vim-colors-solarized'
+" Plugin 'altercation/vim-colors-solarized'
 Plugin 'jaromero/vim-monokai-refined'
-Plugin 'digitaltoad/vim-jade'
-Plugin 'ap/vim-css-color'
+" Plugin 'digitaltoad/vim-jade'
+" Plugin 'ap/vim-css-color'
 
 if IsUnix()
   " Plugin 'scrooloose/syntastic'    " This doesn't work with MSVC.. standard.
   " Plugin 'omnisharp/omnisharp-vim' " Not currently using this on WIN32
-  Plugin 'dag/vim-fish'            " Fish filetype detection, among others
+  " Plugin 'dag/vim-fish'            " Fish filetype detection, among others
 endif
 
 " Plugin 'vim-scripts/autoclose'
@@ -87,6 +88,7 @@ syntax on
 
 set background=dark
 
+colorscheme Monokai-Refined
 " colorscheme solarized
 
 " High contrast dark theme
@@ -102,7 +104,7 @@ set background=dark
 " colorscheme bvemu
 
 " Muted dark themes
-colorscheme badwolf
+" colorscheme badwolf
 " colorscheme blazer
 
 " Left off here
@@ -155,7 +157,7 @@ highlight SpellBad ctermbg=NONE term=bold,underline cterm=bold,underline
 
 highlight Comment ctermfg=180
 
-highlight CursorLine ctermbg=NONE
+highlight CursorLine ctermbg=238
 highlight ColorColumn ctermbg=238
 
 " Indent highlighting, among others
@@ -221,6 +223,7 @@ if IsWin32()
     au! BufRead,BufNewFile *.pf           setfiletype dds
     au! BufRead,BufNewFile *.lf           setfiletype dds
     au! BufRead,BufNewFile *.sqlcpp       setfiletype cpp
+    au! BufRead,BufNewFile *.axlsx        setfiletype ruby
   augroup END
 
   " Open current file in VS
@@ -289,6 +292,8 @@ else
 
   if filereadable("./make.sh")
     set makeprg=./make.sh
+  elseif filereadable("./scripts/make.sh")
+    set makeprg=./scripts/make.sh
   endif
 
   set grepprg=ack
@@ -304,6 +309,9 @@ endif
 if filereadable("./Cargo.toml")
   set makeprg=cargo\ build
 endif
+
+" Typescript - lifted from https://github.com/leafgarland/typescript-vim
+set errorformat+=%+A\ %#%f\ %#(%l\\\,%c):\ %m,%C%m
 
 
 " Toggle background colors ..?
@@ -375,13 +383,6 @@ set keywordprg=:help
 " map N Nzz
 " map n nzz
 
-" Quicker toggle entire fold
-map zz zA
-
-set foldmethod=syntax
-set foldlevelstart=999
-
-set fdo-=search " only search in open folds
 
 " Set Vimperatorrc as vimfile
 autocmd BufNewFile,BufRead .vimperatorrc set ft=vim
@@ -390,6 +391,29 @@ autocmd BufNewFile,BufRead .vimperatorrc set ft=vim
 "                                    Syntastic
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " let g:syntastic_cpp_compiler_options  = "-DDEBUG=1 -I./external/glm-0.9.7.1/ -I./src/ -I./src/GL/ -I./src/datatypes/"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                      Ale
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:ale_linters = {}
+let g:ale_linters['haskell'] = ['hlint', 'ghc']
+
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['prettier', 'eslint']
+let g:ale_fixers['typescript'] = ['tslint', 'prettier', 'eslint']
+let g:ale_fixers['haskell'] = ['hfmt']
+
+let g:ale_javascript_eslint_use_global = 0
+
+let g:ale_set_highlights = 0
+" highlight clear ALEErrorSign
+" highlight clear ALEWarningSign
+
+" easily jump between errors
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <Leader>p :ALEFix<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   Status Line
@@ -465,7 +489,7 @@ nnoremap <leader>et           :tabe ~/til/<CR>
 " Random .env stuff
 nnoremap <leader>ee           :tabe ~/.env<CR>
 
-nnoremap <leader>eg           :tabe ~/.gitconfig<CR>
+nnoremap <leader>eg           :tabe ~/.gdbinit<CR>
 
 " snippets file
 nnoremap <silent> <Leader>es :UltiSnipsEdit<CR>
@@ -500,6 +524,14 @@ nnoremap <Leader>d :call delete(expand('%'))<CR>
 
 nnoremap <Leader>q :call ToggleQuickfix()<CR>
 
+function! Todos()
+  if filereadable("./scripts/todo.sh")
+    cexpr system('./scripts/todo.sh')
+    let g:qfix_win = bufnr("$")
+    copen
+  endif
+endfunction
+
 function! ToggleQuickfix()
   if exists("g:qfix_win")
     cclose
@@ -531,9 +563,14 @@ map <F6> :Mvn clean package<CR>:Java<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set foldmethod=syntax
-set foldlevelstart=1
+set foldlevelstart=99
 
-let javaScript_fold=1         " JavaScript
+" Quicker toggle entire fold
+map zz zA
+
+set fdo-=search " only search in open folds
+
+" let javaScript_fold=1         " JavaScript
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                      Splitting
@@ -594,7 +631,7 @@ let g:UltiSnipsEditSplit = 'vertical'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Ctrlp uses vims wildignore to ignore directories
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/.stack-work/*
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/.stack-work/*,*/bin/*,*/build/CMakeFiles/*,*/build/CMakeCache.txt,*/build/cmake_install.cmake,*/build/Makefile,*/fonts/*,*tmp/grunt*
 
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
@@ -611,7 +648,7 @@ let g:ctrlp_dotfiles = 1
 " let g:ctrlp_switch_buffer = 0
 " let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
  let g:ctrlp_custom_ignore = {
-    \ 'dir':'\v[\/]\.git$|.*/cache|node_modules|.meteor|vendor|ngrok|composer.lock',
+    \ 'dir':'\v[\/]\.git$|.*/cache|node_modules|.meteor|vendor|ngrok|composer.lock|_site|.sass-cache',
     \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -630,32 +667,18 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                              Filetype Specific
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set scss as css files for syntax highlighting
-autocmd BufNewFile,BufRead *.scss set ft=css
 
-" Mustache as html
-autocmd BufNewFile,BufRead *.mustache set ft=html
-
-" Set deface as html
-autocmd BufNewFile,BufRead *.deface set ft=html
-
-" Set sxhkdrc as shell
-autocmd BufNewFile,BufRead sxhkdrc set ft=sh
-
-" Vagrantfile
-autocmd BufNewFile,BufRead Vagrantfile set ft=ruby
-
-" Set Xresources
-autocmd BufNewFile,BufRead *Xresource* set ft=xdefaults
-
-" Typescript to Javascript
-autocmd BufNewFile,BufRead *ts set ft=javascript
-
-" twig
-autocmd BufNewFile,BufRead *twig set ft=html
-
-" GLSL
-autocmd BufNewFile,BufRead *shader set ft=glsl
+autocmd   BufNewFile,BufRead   *.scss        set   ft=css
+autocmd   BufNewFile,BufRead   *.dae         set   ft=xml
+autocmd   BufNewFile,BufRead   *.mustache    set   ft=html
+autocmd   BufNewFile,BufRead   *.deface      set   ft=html
+autocmd   BufNewFile,BufRead   sxhkdrc       set   ft=sh
+autocmd   BufNewFile,BufRead   Vagrantfile   set   ft=ruby
+autocmd   BufNewFile,BufRead   *Xresource*   set   ft=xdefaults
+" autocmd   BufNewFile,BufRead   *ts           set   ft=javascript
+" autocmd   BufNewFile,BufRead   *tsx          set   ft=javascript
+autocmd   BufNewFile,BufRead   *twig         set   ft=html
+autocmd   BufNewFile,BufRead   *shader       set   ft=glsl
 
 " Reloads vim when the .vimrc gets modified
 " autocmd BufWritePost ~/.vimrc so %
@@ -665,6 +688,7 @@ autocmd BufNewFile,BufRead *shader set ft=glsl
 
 " Compile my resume when I save it
 autocmd BufWritePost resume.* ! node render.js --sample
+autocmd BufWritePost recent_experience.* ! node render.js --sample
 
 " Ruby and Rails autocomplete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
@@ -740,7 +764,7 @@ function! FormatJSON()
   execute '%!python -m json.tool' | w
 endfunction
 " Get highlight group for character under cursor.
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+map <leader>z :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
@@ -865,6 +889,7 @@ if has("cscope")
     nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
     nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
     nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>a :cs find a <C-R>=expand("<cword>")<CR><CR>
 
 
     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type

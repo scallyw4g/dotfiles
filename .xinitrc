@@ -20,6 +20,8 @@ syndaemon -d -K -i 0.25
 
 # xrandr --output HDMI-0 --auto --left-of eDP-0
 
+setxkbmap -option ctrl:nocaps
+
 sxhkd -c ~/.sxhkdrc &
 
 exec bspwm -c ~/.bspwmrc

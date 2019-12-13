@@ -122,7 +122,6 @@ if has("gui_running")
 endif
 
 
-
 highlight clear SignColumn
 
 " Clear background
@@ -166,6 +165,9 @@ highlight SpecialKey guifg=grey ctermfg=8 ctermbg=NONE cterm=NONE
 
 highlight link diffAdded DiffAdd
 highlight link diffRemoved DiffDelete
+
+highlight DiffAdd ctermfg=green cterm=NONE
+highlight DiffAdd ctermbg=NONE
 
 highlight Normal ctermbg=NONE
 highlight NonText ctermbg=NONE

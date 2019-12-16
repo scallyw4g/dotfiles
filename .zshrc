@@ -1,14 +1,38 @@
-[ -f $HOME/.env ] && . ~/.env
 
-[ -f $HOME/.scripts/shell-startup.sh ] && $HOME/.scripts/shell-startup.sh
+[ -f $HOME/emsdk/emsdk_env.sh ] && source $HOME/emsdk/emsdk_env.sh > /dev/null
 
-[ -f $HOME/emsdk/emsdk_env.sh ] && . $HOME/emsdk/emsdk_env.sh > /dev/null
+[ -f $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+bindkey '^ ' autosuggest-accept
+
+# This appends to the zsh-completion functions instead of overwriting
+[[ -z $precmd_functions ]] && precmd_functions=()
+precmd_functions=($precmd_functions StoppedJobs)
+
+autoload -Uz compinit promptinit
+promptinit
+compinit
 
 alias tree='tree -I "node_modules|bower_components|CMakeFiles|_site|static"'
 
 export TERM=xterm-256color
+export EDITOR=vim
+export KEYTIMEOUT=1 # kill lag when escaping to vi mode
+export HISTCONTROL="ignoreboth:erasedumps"
+
+HISTFILE=~/.histfile
+HISTSIZE=65535
+SAVEHIST=65535
+setopt appendhistory autocd
+
+unsetopt beep
 
 setxkbmap -layout us -option ctrl:swapcaps
+
+# Disable <C-s> scroll-lock / SFC on-off
+stty -ixon
+
+bindkey "^P" up-line-or-search
+bindkey "^N" down-line-or-search
 
 # Override border width whenever a terminal is opened.
 # bspc config -n focused border_width 1
@@ -16,16 +40,12 @@ setxkbmap -layout us -option ctrl:swapcaps
 # For some reason opening lemonbar is fucking this up
 # bspc config top_padding 80
 
-export IRIS_DATABASE_USER=iris
-
-# Duh
-export EDITOR=vim
 
 # Manage ssh-agents with keychain
-keychain > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-  eval $(keychain --eval --agents ssh -Q --quiet $HOME/.ssh/id_ecdsa)
-fi
+# keychain > /dev/null 2>&1
+# if [ $? -eq 0 ]; then
+#   eval $(keychain --eval --agents ssh -Q --quiet $HOME/.ssh/id_ecdsa)
+# fi
 
 # some completion speeding
 __git_files () {
@@ -35,15 +55,12 @@ __git_files () {
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle :compinstall filename '/home/scallywag/.zshrc'
 
-autoload -Uz compinit promptinit
-promptinit
-compinit
-
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*' menu select
 zstyle ':completion:*' accept-exact '*(N)'
 setopt completealiases
+
 #
 # And set some styles...
 zstyle ':completion:*:descriptions' format "- %d -"
@@ -134,39 +151,25 @@ git_prompt_string() {
   [ -n "$git_where" ] && echo "$GIT_PROMPT_SYMBOL$(parse_git_state)$GIT_PROMPT_PREFIX%{$fg[yellow]%}${git_where#(refs/heads/|tags/)}$GIT_PROMPT_SUFFIX"
 }
 
-# Functions to be fired before prompt is printed
-precmd_functions=(stopJobsCount)
 
 # possibly provides access to $#jobstates associative array
 # zmodload zsh/parameter
 
-stopJobsCount () {
-	local stopJobs=$#jobstates
-	if [ $stopJobs = '0' ]; then
-		STOPPEDJOBS=''
-	elif [ $stopJobs = '1' ]; then
-		STOPPEDJOBS=$stopJobs' job '
-	else
-		STOPPEDJOBS=$stopJobs' jobs '
-	fi
+StoppedJobs () {
+  local jobCount="$(jobs | wc -l)"
+  if [ "$jobCount" = "0" ]; then
+    STOPPED_JOBS=""
+  elif [ "$jobCount" = "1" ]; then
+    STOPPED_JOBS="$jobCount job "
+  else
+    STOPPED_JOBS="$jobCount jobs "
+  fi
 }
 
 # Set the right-hand prompt
 RPS1='$(git_prompt_string)'
 
-PROMPT='%F{blue}  %(?/─── /── %F{red}!) %F{yellow}$STOPPEDJOBS%F{blue}%c '
-
-# Increase history size
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=3000
-setopt appendhistory autocd
-unsetopt beep
-
-export HISTCONTROL="ignoreboth:erasedumps"
-
-# kill lag when escaping to vi mode
-export KEYTIMEOUT=1
+PROMPT='%F{blue}  %(?/─── /── %F{red}!) %F{yellow}$STOPPED_JOBS%F{blue}%c '
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -174,17 +177,14 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
 fi
 
-# Rbenv stuff
+# Rbenv
 if [ -d $HOME/.rbenv ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
+  # Ruby build
+  export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 fi
 
-# Ruby build stuff
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
-
-# export PATH="$HOME/.phpenv/bin:$PATH"
-# eval "$(phpenv init -)"
 
 # Stack for Haskell
 export PATH=$HOME/.local/bin:$PATH
@@ -196,14 +196,5 @@ export PATH=$PATH:$HOME/bin
 export PATH=$PATH:~/.node_modules/bin
 export npm_config_prefix=~/.node_modules
 
-# Global composer packages
-export PATH=$PATH:~/.composer/vendor/bin
-
-# Disable <C-s> scroll-lock / SFC on-off
-stty -ixon
-
 # export NVM_DIR="/home/scallywag/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-bindkey "^P" up-line-or-search
-bindkey "^N" down-line-or-search

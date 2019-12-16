@@ -21,7 +21,13 @@ echo "--------------------------------------------------------------------------
 
 # Setup Zsh
 $INSTALL zsh
-# chsh -s $(which zsh)
+chsh -s $(which zsh)
+
+if [ ! -d $HOME/.zsh ]; then
+  mkdir $HOME/.zsh
+fi
+
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
 # Install package dependencies
 $INSTALL firefox mpd sxhkd bspwm $ack vim git rxvt-unicode-256color ssh
@@ -38,15 +44,8 @@ if [ ! -d $HOME/.local/share/fonts ]; then
   rm -Rf fonts
 fi
 
-# TODO(Jesse): Install lemonbar
+# TODO(Jesse): Install lemonbar?
 
-
-# Install Composer
-if [ ! -f /usr/local/bin/composer ]; then
-  echo "Installing Composer"
-  sudo curl -s https://getcomposer.org/installer | php
-  sudo mv ./composer.phar /usr/local/bin/composer
-fi
 
 # Install rbenv and ruby-build
 if [ ! -d $HOME/.rbenv ]; then
@@ -60,12 +59,12 @@ fi
 
 # Install Vundle
 if [ ! -d $HOME/.vim/bundle/Vundle.vim ]; then
-	echo "Installing Vundle"
-	git clone https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+  echo "Installing Vundle"
+  git clone https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 fi
 
 if [ ! -d $HOME/dotfiles ]; then
-	echo "Installing dotfiles"
+  echo "Installing dotfiles"
   git clone https://github.com/jjbandit/dotfiles.git
 fi
 

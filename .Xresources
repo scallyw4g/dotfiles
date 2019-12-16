@@ -42,6 +42,6 @@ URxvt.internalBorder: 15
 URxvt.depth: 32
 
 ! Scrollback buffer - 65535 is max
-URxvt*saveLines:12000
+URxvt*saveLines:65535
 
 URxvt.intensityStyles: false

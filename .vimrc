@@ -24,7 +24,7 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'peitalin/vim-jsx-typescript'
 
 " Colors
-" Plugin 'flazz/vim-colorschemes'
+Plugin 'flazz/vim-colorschemes'
 
 Plugin 'tikhomirov/vim-glsl'
 
@@ -36,7 +36,7 @@ Plugin 'tikhomirov/vim-glsl'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Rust
-" Plugin 'rust-lang/rust.vim'
+Plugin 'rust-lang/rust.vim'
 
 " Utilities
 " Plugin 't9md/vim-quickhl'          " On they fly keyword highlighting

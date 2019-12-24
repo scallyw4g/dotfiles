@@ -679,6 +679,8 @@ autocmd   BufNewFile,BufRead   Vagrantfile   set   ft=ruby
 autocmd   BufNewFile,BufRead   *Xresource*   set   ft=xdefaults
 " autocmd   BufNewFile,BufRead   *ts           set   ft=javascript
 " autocmd   BufNewFile,BufRead   *tsx          set   ft=javascript
+autocmd   BufNewFile,BufRead   *ts           set   makeprg=./make.sh
+autocmd   BufNewFile,BufRead   *tsx          set   makeprg=./make.sh
 autocmd   BufNewFile,BufRead   *twig         set   ft=html
 autocmd   BufNewFile,BufRead   *shader       set   ft=glsl
 
